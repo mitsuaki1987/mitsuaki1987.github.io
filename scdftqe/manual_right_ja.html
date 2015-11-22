@@ -1,0 +1,657 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>SCDFT@QE日本語マニュアル</title>
+    
+    <meta name="description" content="libtetrabz日本語マニュアル">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+    
+    <center><h1>SCDFT@QE日本語マニュアル</h1></center>
+    <center><h2>バージョン1.0</h2></center>
+    <center><h2>河村光晶</h2></center>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h1><a name="hajimeni">はじめに</a></h1>
+
+    <p>この文書では超伝導密度汎関数理論(SCDFT)に基づく第一原理計算プログラムパッケージ
+      「SCDFT@QE」についての解説を行っている. 
+      SCDFT@QEは Quantum ESPRESSO のアウトプットを用いてギャップ方程式
+    <p>$$
+      \begin{aligned}
+      \Delta_{n k} = -\frac{1}{2} \sum_{n' k'}
+      \frac{K^{\rm el-el}_{n k n' k'} + K^{\rm el-ph}_{n k n' k'}}{Z_{n k}}
+      \frac{\Delta_{n' k'}}{E_{n' k'}}\tanh\left(
+      \frac{\beta E_{n' k'}}{2}
+      \right)
+      \end{aligned}
+      $$</p>
+    <p>を構成し, 
+    それを解いてギャップ関数$\Delta_{n k}$を計算する.
+    このソフトウェアは東京大学物性研究所の河村光晶によって開発された.</p>
+    
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h1><a name="gpllicense">2, GNU General Public License</a></h1>
+
+    <p>SCDFT@QE - First-principles superconducting electronic structure calculation
+      package</p>
+    <p>Copyright (C) 2015 Mitsuaki</p>
+
+    <p>
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
+    </p>
+    <br>
+    <p>
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+    </p>
+    <br>
+    <p>
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see &lthttp://www.gnu.org/licenses/&gt.
+    </p>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h1><a name="installation">3, インストール方法</a></h1>
+
+    <hr>
+    <h2><a name="filesinthispackage">3.1, このパッケージに含まれているファイル</a></h2>
+    
+    <p><code>doc/manual_jp.html</code> : マニュアル(日本語)</p>
+    <p><code>sample/</code> : ライブラリ使用例</p>
+    <p><code>src/</code> : ソースファイルディレクトリ</p>
+    <p><code>scdftqe_config.sh</code> : ビルド環境設定用スクリプト</p>
+    
+    <hr>
+    <h2><a name="youken">3.2, 要件</a></h2>
+    
+    <p>以下のものが必要となる.</p>
+    <ul>
+      <li><p>fortran コンパイラ</p></li>
+      <li><p>MPI ライブラリ</p></li>
+      <li><p>BLAS ライブラリ</p></li>
+      <li><p>FFTW ライブラリ</p></li>
+      <li><p>DFPT-tetraパッチをあてたQuantum ESPRESSO(+PHonon)</p></li>
+    </ul>
+    
+    DFPT-tetraパッチをあてたQuatum ESPRESSOのインストールには、次の2つの方法がある。
+
+    <ul>
+      <li>
+        <p><code>tar.gz</code>を使う方法</p>
+        <p>
+          まず<a href="http://qe-forge.org/gf/project/q-e/frs/" target="_top">
+            オリジナルのQuantum ESPRESSOのダウンロードサイト</a>
+          から<code>espresso-<i>version</i>.tar.gz</code>および<code>PHonon-<i>tversion</i>.tar.gz</code>
+          をダウンロードし展開する。
+          <pre><code>
+$ tar xzvf espresso-<i>version</i>.tar.gz
+$ tar xzvf PHonon-<i>version</i>.tar.gz -C espresso-<i>version</i>.tar.gz
+          </code></pre>
+          次に<a href="http://qe-forge.org/gf/project/dfpttetra/frs/" target="_top">
+            DFPT-tetraのダウンロードサイト</a>
+          からDFPT-tetraパッチをダウンロードし、QEのディレクトリ内に展開する.
+          <pre><code>
+$ tar xzvf dfpttetra-<i>version</i>.tar.gz -C espresso-<i>version</i>.tar.gz
+          </code></pre>
+          最後に展開したディレクトリの中に入り、ビルドする.
+          <pre><code>
+$ cd espresso-<i>version</i>
+$ ./configure <i>options</i>
+$ make pw pp ph
+          </code></pre>
+        </p>
+      </li>
+      <li>
+        <p>Gitを使う方法</p>
+        <p>バージョン管理ソフトGitが利用できる場合は次のようにしてDFPT-tetraパッチをあてたQE
+          を得ることができる.
+          <pre><code>
+$ git clone git@github.com:mitsuaki1987/DFPT-tetra.git
+          </code></pre>
+      </li>
+    </ul>
+    <hr>
+    <h2><a name="installtejun">3.3, インストール手順</a></h2>
+    <ol>
+      <li><p>以下の場所から<code>.tar.gz</code>ファイルをダウンロードする.</p>
+        <pre><code>
+Under constructing ...
+        </code></pre>
+      </li>
+      <li><p>ダウンロードした<code>.tar.gz</code>ファイルを展開し, 出来たディレクトリに入る.</p>
+        <pre><code>
+$ tar xzvf 
+$ cd 
+        </code></pre>
+      </li>
+      <li><p>ビルド環境設定ファイル<code>scdftqe_config.sh</code>を実行する.</p>
+        <pre><code>
+$ source scdftqe_config.sh
+        </code></pre>
+        すると, <code>src/</code>ディレクトリ内に<code>make.sys</code>が作られる.
+        必要ならばこのファイルを適当なエディタで編集する.
+      </li>
+      <li><p><code>src/</code>ディレクトリ内でコンパイルする.</p>
+        <pre><code>
+$ cd src/ 
+$ make all
+        </code></pre>
+        いくつかの実行可能ファイルが作られるので, このディレクトリを環境変数<code>PATH</code>
+        に追加すると便利である.
+      </li>
+    </ol>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h1><a name="programs">4, 各プログラムの説明</a></h1>
+    
+    SCDFT@QEにはメインプログラム
+    <ul>
+      <li><code>scdft.x</code> : ギャップ方程式を解いて超伝導ギャップ$\Delta_{n k}$を計算する.</li>
+      <li><code>rpa_el.x</code> : <code>scdft.x</code>の前処理として, QEで計算したKohn-Sham軌道から
+        電子間Coulom相互作用行列$K^{\rm el-el}_{n k n' k'}$を計算する.</li>
+      <li><code>twingrid.sh</code> : <code>rpa_el.x</code>で用いるKohn-Sham軌道を計算する
+      2重$k$点グリッドを生成するためのスクリプト.</li>
+      <li><code>get_eigval.x</code> : <code>scdft.x</code>, <code>rpa_el.x</code>
+        の前処理として, QEで計算したKohn-Shamエネルギーを読み込み, ファイルに出力する.</li>
+    </ul>
+    および付加的プログラム
+    <ul>
+      <li><code>deltaf.x</code> : <code>scdft.x</code>で得られた$\Delta_{n k}$から
+      ギャップ方程式を非自己無撞着に計算し<a href="http://fermisurfer.osdn.jp/" target="_top">
+          FermiSurfer</a>でプロット可能なファイルを出力する.</li>
+      <li><code>qpdos.sh</code> : <code>scdft.x</code>で得られた$\Delta_{n k}$から
+      ギャップ方程式を非自己無撞着に計算してから, 準粒子DOSを計算する.</li>
+      <li><code>ultrasonic.x</code> : <code>scdft.x</code>で得られた$\Delta_{n k}$から
+      ギャップ方程式を非自己無撞着に計算してから, 超音波吸収係数を計算する.</li>
+      <li><code>rpa.x</code> : <code>rpa_el.x</code>で行ったChebysev補間が
+        上手く行っているかどうかを確かめるときに用いる.</li>
+      <li><code>verify.x</code> : <code>rpa_el.x</code>で行ったChebysev補間が
+        上手く行っているかどうかを確かめるときに用いる.</li>
+      <li><code>bin2txt.x</code> : <code>rpa.x</code>の出力をバイナリファイルから
+        テキストファイルへ変換する</li>
+    </ul>
+    次からこれらのプログラムについて説明する.
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h2><a name="scdftx">4.1, scdft.x</a></h2>
+
+    <h3>4.1.1, 使い方</h3>
+    <pre><code>
+mpiexec <i>options</i> <i>PATH</i>/scdft.x < <i>input_file</i>
+    </code></pre>
+
+    <h3><a name="scdft_input">4.1.2, 標準入力書式</a></h3>
+
+    標準入力の書式は次のとおりである.なお, この書式は<code>deltaf.x</code>,
+    <code>qpdos.x</code>, <code>ultrasonic.x</code>と同一である.
+    <pre><code>
+&ampCONTROL
+ prefix = (1)
+/
+&ampSYSTEM
+            temp = (2),
+            fbee = (3),
+            lbee = (4), 
+             xic = (5), 
+             nmf = (6), 
+              nx = (7),
+              ne = (8), 
+            emin = (9), 
+            emax = (10),
+          ltetra = (11), 
+electron_maxstep = (12), 
+        conv_thr = (13)
+/
+    </code></pre>
+    これらのパラメーターは順不同に指定できる.
+    また省略した場合はデフォルト値が使われる.
+
+    <ol>
+      <li><code>prefix</code> : (文字列, デフォルト <code>&quot.&quot</code>)
+        <code>pw.x</code>の入力の<code>prefix</code>と同じにする.</li>
+      <li><code>temp</code> : (正の実数, デフォルト <code>0.1</code>)温度. 単位ケルビン.</li>
+      <li><code>fbee</code> : (正の整数, デフォルト <code>1</code>) 全バンドのうち, 
+        ギャップ方程式の計算に含める一番初めのバンド.</li>
+      <li><code>lbee</code> : (正の整数, デフォルトでは
+        <code>rpa_el.x</code>で考慮したバンド数と同じ) 全バンドのうち, 
+        ギャップ方程式の計算に含める最後のバンド.</li>
+      <li><code>xic</code> : (実数, デフォルト<code>-1.0</code>) 
+        ギャップ関数外挿法に用いるパラメーター. 単位 Ry. 
+        これを0未満にするとギャップ関数外挿法を使わない. 
+        デフォルトでは外挿法を使わない設定になっている.</li>
+      <li><code>nmf</code> : (整数, デフォルト <code>10</code>)
+        Comlombカーネルの計算で用いる松原振動数積分に用いる点の数.
+        <code>0</code>にすると静的なCoulomb相互作用のみをつかう.
+        また, 負の値にするとCoulomb相互作用項を0として
+        (フォノン項のみを考慮して)計算する.</li>
+      <li><code>nx</code> : (<code>scdft.x</code>のみで使用, 正の整数, 
+        デフォルト <code>100</code>)
+        フェルミ面近傍のバンドの付加的エネルギーグリッドのグリッド数.</li>
+      <li><code>ne</code> : (<code>qpdos.x</code>のみで使用, 正の整数, 
+        デフォルト <code>50</code>) 準粒子DOSを計算するエネルギー点数.</li>
+      <li><code>emin</code> : (<code>scdft.x</code>のみで使用, 正の実数, 
+        デフォルト <code>1.0e-7</code>)
+        フェルミ面近傍のバンドの付加的エネルギーグリッドのためのパラメータ. 
+        単位 Ry.</li>
+      <li><code>emax</code> : (<code>qpdos.x</code>のみで使用, 正の実数, 
+        デフォルト <code>5.0</code>) 準粒子DOSを計算するエネルギーグリッドの上限.
+        単位 meV.</li>
+      <li><code>ltetra</code> : (<code>scdft.x</code>, <code>qpdos.x</code>, 
+        <code>ultrasonic.x</code>で使用, <code>1</code>もしくは<code>2</code>, 
+        デフォルト <code>2</code>)使用するテトラへドロン法の種類を指定する.
+        1:線形テトラへドロン法, 2: 最適化テトラへドロン法.
+      </li>
+      <li><code>electron_maxstep</code> : (<code>scdft.x</code>のみで使用, 正の整数, 
+        デフォルト <code>100</code>) ギャップ方程式を反復法で解くときの反復回数の上限数.
+      </li>
+      <li><code>conv_thr</code> : (<code>scdft.x</code>のみで使用, 正の実数, 
+        デフォルト <code>1.0e-15</code>)
+        ギャップ方程式を反復法で解くときの, 
+        新旧のギャップ関数の差の2乗平均に対する収束判定のしきい値. 単位 Ry.
+      </li>        
+    </ol>
+
+    <h3>4.1.3, 入力データ</h3>
+
+    プログラムを実行しているディレクトリ内に, 次のものを用意しておく必要がある.
+
+    <ul>
+      <li><i>prefix</i><code>.save/eigval.dat</code> : 
+        通常のDFT計算で求めたKohn-Shamエネルギーやその$k$メッシュ情報, 対称操作を含む. 
+        <code>get_eigval.x</code>により生成される.
+      </li>
+      <li><code>elph1.dat</code>, <code>elph2.dat</code>, $\cdots$ : 
+        各$q$点での電子-フォノン相互作用, フォノン振動数. <code>ph.x</code>により作られる.
+      </li>
+      <li><code>vel1.dat</code>, <code>vel2.dat</code>,$\cdots$ : 
+        各$q$点での遮蔽Coulomb相互作用のChebyshev補間の係数. 
+        <code>rpa_el.x</code>により生成される.
+      </li>
+    </ul>
+
+    <h3>4.1.4, 出力ファイル</h3>
+    
+    プログラムを実行したディレクトリに, 次のものが作られる.
+    
+    <ul>
+      <li><code>delta.dat</code> : 
+        超伝導ギャップ関数 $\Delta_{n k}$. 対応するKohn-Shamエネルギー $\xi_{n k}$, 
+        積分重み, バンド番号, $k$点番号, 繰りこみ因子 $Z_{n k}$
+      </li>
+    </ul>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h2><a name="rpa_elx">4.2, rpa_el.x / rpa.x </a></h2>
+    
+    <h3>4.2.1, 使い方</h3>
+    <pre><code>
+mpiexec <i>options</i> <i>PATH</i>/rpa_el.x < <i>input_file</i>
+    </code></pre>
+
+    <h3><a name="rpa_el_input">4.2.2, 標準入力書式</a></h3>
+
+    標準入力の書式は次のとおりである.なお, 
+    この書式は<code>rpa.x</code>と同一である.
+    <pre><code>
+&ampCONTROL
+ prefix = (1)
+/
+&ampSYSTEM
+ ng(1:3) = (2), 
+ start_q = (3), 
+  last_q = (4), 
+     nmf = (5), 
+  ltetra = (6), 
+  laddxc = (7), 
+ ecutwfc = (8),
+/
+    </code></pre>
+    これらのパラメーターは順不同に指定できる.
+    また省略した場合はデフォルト値が使われる.
+
+    <ol>
+      <li><code>prefix</code> : (文字列, デフォルト <code>&qquot.&qquot</code>)
+        <code>pw.x</code>の入力の<code>prefix</code>と同じにする.</li>
+      <li><code>ng(1:3)</code> : (正の整数配列, 
+        デフォルトは<code>eigval.dat</code>の$k$点メッシュ数と同じ)
+        波動関数データの$k$点メッシュ.
+        <code>twingrid.sh</code>の入力と同じにしなければならない.
+      </li>
+      <li><code>start_q</code> : (正の整数, デフォルトは<code>1</code>)
+        遮蔽Coulomb相互作用を計算するはじめの$q$点のインデックス
+      </li>
+      <li><code>last_q</code> : (正の整数, デフォルトは<code>start_q</code>)
+        遮蔽Coulomb相互作用を計算する最後の$q$点のインデックス
+      </li>
+      <li><code>nmf</code> : (正の整数, デフォルトは<code>5</code>)
+        遮蔽Coulomb相互作用を計算する松原振動数の数.
+        <code>0</code>を指定した場合には, <code>rpa.x</code>では静的部分のみ計算する.
+        <code>rpa_el.x</code>では静的部分に加えて, 振動数無限大(遮蔽なし)の計算もする.
+      </li>
+      <li><code>ltetra</code> : (整数, <code>1</code>もしくは<code>2</code>, 
+        デフォルト <code>2</code>)使用するテトラへドロン法の種類を指定する.
+        1:線形テトラへドロン法, 2: 最適化テトラへドロン法.
+      </li>
+      <li><code>laddxc</code> : (整数, デフォルト<code>0</code>)
+        遮蔽を計算するときの近似のレベルを指定する.
+        0 : RPA, 1: 断熱的LDA.
+      </li>
+      <li><code>ecutwfc</code> : (実数, デフォルト<code>30.0</code>)
+        分極関数を計算するときの平面波カットオフ.
+        負の値を指定した場合はカットオフを設けずにFFTグリッド内のすべての平面波を使う.
+      </li>
+    </ol>
+
+    <h3>4.2.3, 入力データ</h3>
+
+    プログラムを実行しているディレクトリ内に, 次のものを用意しておく必要がある.
+
+    <ul>
+      <li><i>prefix</i><code>.save/eigval.dat</code> : 
+        通常のDFT計算で求めたKohn-Shamエネルギーやその$k$メッシュ情報, 対称操作を含む. 
+        <code>get_eigval.x</code>により生成される.
+      </li>
+      <li><i>prefix</i><code>.save/data-file.xml</code> : 
+        格子定数等の情報を含む. <code>pw.x</code>により生成される.
+      </li>
+      <li><i>prefix</i><code>.save/K?????/gkvectors.dat</code> : 
+        各$k$点のKohn-Sham軌道の逆格子点の情報. 
+        <code>?????</code>には$k$点の番号が入る.
+        <code>pw.x</code>において
+        <code>wf_collect=.true.</code>とすると生成される.
+      </li>
+      <li><i>prefix</i><code>.save/K?????/evc.dat</code> : 
+        各$k$点のKohn-Sham軌道. 
+        <code>?????</code>には$k$点の番号が入る.
+        <code>pw.x</code>において
+        <code>wf_collect=.true.</code>とすると生成される.
+      </li>
+    </ul>    
+
+    <h3>4.2.4, 出力ファイル</h3>
+    
+    プログラムを実行したディレクトリに, 次のものが作られる.
+
+    <ul>
+      <li><code>vc[</code><i>iqdo</i><code>].dat</code> : 
+        <code>rpa.x</code>を実行した場合のみ.
+        各$q$点での遮蔽Coulomb相互作用. 
+      </li>
+      <li><code>vel[</code><i>iqdo</i><code>].dat</code>: 
+        <code>rpa_el.x</code>を実行した場合のみ.
+        各$q$点での遮蔽Coulomb相互作用のChebyshev補間の係数. 
+      </li>
+    </ul>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h2><a name="get_eigvalx">4.3, get_eigval.x</a></h2>
+    
+    <h3>4.3.1, 使い方</h3>
+    <pre><code>
+<i>PATH</i>/get_eigval.x
+    </code></pre>
+    すると<code>prefix</code>は何かと尋ねられるので,
+    <code>pw.x</code>のインプットと同じものを入力する.
+
+    <h3>4.3.2, 入力データ</h3>
+
+    プログラムを実行しているディレクトリ内に, 次のものを用意しておく必要がある.
+
+    <ul>
+      <li><i>prefix</i><code>.save/data-file.xml</code> : 
+        格子定数等の情報を含む. <code>pw.x</code>により生成される.
+      </li>
+      <li><i>prefix</i><code>.save/K?????/eigenval.xml</code> : 
+        各$k$点のKohn-Shamエネルギー. 
+        <code>?????</code>には$k$点の番号が入る.
+        <code>pw.x</code>によって出力される.
+        <code>wf_collect</code>が<code>.true.</code>でも<code>.false.</code>でも生成される.
+      </li>
+    </ul>    
+
+    <h3>4.3.3, 出力ファイル</h3>
+    
+    プログラムを実行したディレクトリに, 次のものが作られる.
+
+    <ul>
+      <li><i>prefix</i><code>.save/eigval.dat</code> : 
+        通常のDFT計算で求めたKohn-Shamエネルギーやその$k$メッシュ情報, 対称操作を含む. 
+      </li>
+    </ul>
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h2><a name="twingridsh">4.4, twingrid.sh</a></h2>
+    
+    <h3>4.4.1, 使い方</h3>
+    <pre><code>
+<i>PATH</i>/twingrid.sh <i>nk1</i> <i>nk2</i> <i>nk3</i> >> <i>input_file_for_pw.x</i>
+    </code></pre>
+    <i>nk1</i>, <i>nk2</i>, <i>nk3</i>はそれぞれの逆格子ベクトルの方向の$k$点分割数.
+
+    <h3>4.4.2, 標準出力</h3>
+    
+    次のように標準出力される.
+
+    <pre><code>
+ K_POINTS crystal
+<i>Total_number_of_k</i>
+<i>k_vector1</i> 1.0
+<i>k_vector2</i> 1.0
+<i>k_vector3</i> 1.0
+ :
+    </code></pre>
+
+    これにより, $\Gamma$点を含むグリッドと,
+    そこから半グリッドぶんずらしたグリッド上の$k$点がセットで生成される.
+    上の使い方では, この標準出力を<code>pw.x</code>の入力ファイルの末尾にリダイレクトしている.
+
+    <!-------------------------------------------------------------------------->
+    <hr>
+    <h2><a name="deltafx">4.5, deltaf.x / qpdos.x / ultrasonic.x</a></h2>
+
+    <h3>4.5.1, 使い方</h3>
+    <pre><code>
+mpiexec <i>options</i> <i>PATH</i>/deltaf.x < <i>input_file</i>
+mpiexec <i>options</i> <i>PATH</i>/qpdos.x < <i>input_file</i>
+mpiexec <i>options</i> <i>PATH</i>/ultrasonic.x < <i>input_file</i>
+    </code></pre>
+
+    <h3><a name="scdft_input">4.5.2, 標準入力書式</a></h3>
+
+    標準入力の書式は<a href="#scdft_input">4.1.2</a>参照.
+
+    <h3>4.5.3, 入力データ</h3>
+
+    プログラムを実行しているディレクトリ内に, 次のものを用意しておく必要がある.
+
+    <ul>
+      <li><i>prefix</i><code>.save/eigval.dat</code> : 
+        通常のDFT計算で求めたKohn-Shamエネルギーやその$k$メッシュ情報, 対称操作を含む. 
+        <code>get_eigval.x</code>により生成される.
+      </li>
+      <li><code>elph1.dat</code>, <code>elph2.dat</code>, $\cdots$ : 
+        各$q$点での電子-フォノン相互作用, フォノン振動数. <code>ph.x</code>により作られる.
+      </li>
+      <li><code>vel1.dat</code>, <code>vel2.dat</code>,$\cdots$ : 
+        各$q$点での遮蔽Coulomb相互作用のChebyshev補間の係数. 
+        <code>rpa_el.x</code>により生成される.
+      </li>
+      <li><code>delta.dat</code> : 
+        <code>scdft.x</code>によって生成される, ギャップ関数$\Delta_{n k}$のファイル.
+      </li>
+    </ul>
+
+    <h3>4.5.4, 出力ファイル</h3>
+    
+    プログラムを実行したディレクトリに, 次のものが作られる.
+    
+    <ul>
+      <li><code>delta.frmsf, Z.frmsf</code> : (<code>deltaf.x</code>のみ)
+        超伝導ギャップ関数 $\Delta_{n k}$　およびくりこみ因子$Z_{n k}$
+        のFermi面上での値をプロットするための, <code>fermisurfer</code>インプットファイル.
+      </li>
+      <li><code>qpdos.dat</code> : (<code>qpdos.x</code>のみ)
+        第1列:準粒子エネルギー(単位 meV), 第2列:準粒子状態密度(単位 Ry<sup>-1</sup>).
+    </ul>
+
+    <!------------------------------------------------------------------------------->
+    <hr>    
+    <h1><a name="tutorial">5, チュートリアル</a></h1>
+
+    以下のチュートリアルは<code>sample/</code>内で行う.
+
+
+    <h2>5.0, 擬ポテンシャルのダウンロード</h2>
+
+    <p>計算を始める前にMgおよびB原子の擬ポテンシャルを下記のサイトからダウンロードし, 
+    <code>mgb2.save/</code><b>ディレクトリ内に置いておく</b>.</p>
+    <p><a href="http://theossrv1.epfl.ch/uploads/Main/NoBackup/Mg.pbe-n-kjpaw_psl.0.3.0.upf" target="_top">
+        http://theossrv1.epfl.ch/uploads/Main/NoBackup/Mg.pbe-n-kjpaw_psl.0.3.0.upf</a></p>
+    <p><a href="http://theossrv1.epfl.ch/uploads/Main/NoBackup/B.pbe-n-kjpaw_psl.0.1.upf" target="_top">
+        http://theossrv1.epfl.ch/uploads/Main/NoBackup/B.pbe-n-kjpaw_psl.0.1.upf</a></p>
+
+    <p>これらの擬ポテンシャルは<a href="http://theossrv1.epfl.ch/" target="_top">THEOSグループ</a>
+      による<a href="http://theossrv1.epfl.ch/Main/Pseudopotentials" target="_top">PS Library</a>の一部である.</p>
+
+    <h2>5.1, 電荷密度のSCF計算</h2>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/pw.x <i>option</i> -in scf.in > scf.out
+    </code></pre>
+
+    <code>calculation = &quotscf&quot</code>として<code>pw.x</code>を実行する.
+
+    <h2>5.2, フォノンおよび遮蔽Coulomb相互作用の計算</h2>
+
+    次の5.2a, 5.2b はどちらを先にやっても変わらない.
+
+    <h3>5.2a.1, フォノン振動数, 変移ポテンシャルの計算</h3>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/ph.x <i>option</i> -in ph.in > ph.out
+    </code></pre>
+
+    <p>慣れている人は 5,2a.2 と合わせて, 各$q$点ごとに別々の実行を同時に走らせることをおすすめする.</p>
+
+    <h3>5.2a.2, 電子-フォノン相互作用の計算</h3>
+
+    <code>electron_phonon = &quotscdft_input&quot</code>として<code>ph.x</code>を実行すると,
+    すでに計算されている変移ポテンシャル, ダイナミカルマトリックスを読み込み, 電子-フォノンバーテックスを計算する.
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/ph.x <i>option</i> -in elph.in > elph.out
+    </code></pre>
+
+    <h3>5.2b.1, 細かい$k$グリッドでのnon SCF計算</h3>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/pw.x <i>option</i> -in nscf.in > nscf.out
+    </code></pre>
+    <code>calculation = &quotnscf&quot</code>として<code>pw.x</code>を実行する.
+    計算が完了したあと続けて, <code>get_eigval.x</code>を実行する.
+
+    <pre><code>
+<i>PATH</i>/get_eigval.x
+    </code></pre>
+
+    <code>prefix</code>は何かと聞かれるので, <code>pw.x</code>の入力と同じものを入力する.
+
+    <h3>5.2b.2, 遮蔽Coulomb相互作用計算のための波動関数の計算</h3>
+
+    <code>calculation = &quotbands&quot</code>として<code>pw.x</code>のインプット(この場合は
+    <code>twin.in</code>)を作成する.
+    $k$点メッシュに関しては次のように<code>twingrid.sh</code>の出力をファイル末尾にリダイレクトする.
+
+    <pre><code>
+<i>PATH</i>/twingrid.sh 6 6 4 >> twin.in
+    </code></pre>
+
+    この時の$k$点メッシュは5.2a の<code>ph.x</code>のインプットの
+    <code>nq1</code>, <code>nq2</code>, <code>nq3</code> と同じにする.
+    このインプットで<code>pw.x</code>を実行する.
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/pw.x <i>option</i> -in twin.in > twin.out
+    </code></pre>
+
+    <h3>5.2b.3, 遮蔽Coulomb相互作用の計算</h3>
+
+    慣れている人は<code>first_q</code>を変えた入力ファイルを作って, 
+    それぞれの$q$点について同時実行をすることをおすすめする.
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/rpa_el.x < rpa.in > rpa.out
+    </code></pre>
+    
+    <h2>5.3, SCDFT計算</h2>
+
+    5.2 の計算が全て終了した段階でSCDFT計算を行う.
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/scdft.x < scdft.in > scdft.out
+    </code></pre>
+    
+    <h2>5.4, ポスト処理</h2>
+
+    <p>5.3 でもとめた <code>delta.dat</code>($\Delta_{n k}$)を用いて次の量を計算することができる.</p>
+
+    <p><a href="http://fermisurfer.osdn.jp/" target="_top">FermiSurfer</a>
+      でプロット可能な$\Delta_{n k}$データ</p>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/deltaf.x < scdft.in > deltaf.out
+    </code></pre>
+    
+    <p>超伝導準粒子DOS. 計算時間は比較的長い.</p>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/qpdos.x < scdft.in > qpdos.out
+    </code></pre>
+    
+    <p>超音波吸収係数. 結果は標準出力される.</p>
+
+    <pre><code>
+mpiexec <i>option</i> <i>PATH</i>/ultrasonic.x < scdft.in > ultrasonic.out
+    </code></pre>
+    
+    <!------------------------------------------------------------------------------->
+    <hr>    
+    <h1><a name="contact">6, 問い合わせ先</a></h1>
+    <p>プログラムのバグや質問は以下のフォーラムへご投稿ください.</p>
+    <pre><code>
+forum
+    </code></pre>
+    <p>開発に参加したい方は以下の連絡先にて受け付けております.</p>
+    <p>東京大学物性研究所</p>
+    <p>河村光晶</p>
+    <p><code>mkawamura__at__issp.u-tokyo.ac.jp</code></p>
+
+
+    <p><a name="cite">
+        [1] M. Kawamura, R. Akashi, S. Tsuneyuki, 
+    </a></p>
+
+  </body>
+</html>
