@@ -10,14 +10,14 @@
     </script>
     <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
     
-    <title>SCDFT@QE日本語マニュアル</title>
+    <title>Superconducting Toolkit日本語マニュアル</title>
     
     <meta name="description" content="libtetrabz日本語マニュアル">
     
   </head>
   <body bgcolor="CCFFCC">
     
-    <center><h1>SCDFT@QE日本語マニュアル</h1></center>
+    <center><h1>Superconducting Toolkit日本語マニュアル</h1></center>
     <center><h2>バージョン1.0</h2></center>
     <center><h2>河村光晶</h2></center>
 
@@ -26,8 +26,8 @@
     <h1><a name="hajimeni">はじめに</a></h1>
 
     <p>この文書では超伝導密度汎関数理論(SCDFT)に基づく第一原理計算プログラムパッケージ
-      「SCDFT@QE」についての解説を行っている. 
-      SCDFT@QEは Quantum ESPRESSO のアウトプットを用いてギャップ方程式
+      「Superconducting Toolkit」についての解説を行っている. 
+      Superconducting Toolkitは Quantum ESPRESSO のアウトプットを用いてギャップ方程式
     <p>$$
       \begin{aligned}
       \Delta_{n k} = -\frac{1}{2} \sum_{n' k'}
@@ -45,7 +45,7 @@
     <hr>
     <h1><a name="gpllicense">2, GNU General Public License</a></h1>
 
-    <p>SCDFT@QE - First-principles superconducting electronic structure calculation
+    <p>Superconducting Toolkit - First-principles superconducting electronic structure calculation
       package</p>
     <p>Copyright (C) 2015 Mitsuaki</p>
 
@@ -164,7 +164,7 @@ $ make all
     <hr>
     <h1><a name="programs">4, 各プログラムの説明</a></h1>
     
-    SCDFT@QEにはメインプログラム
+    Superconducting Toolkitにはメインプログラム
     <ul>
       <li><code>scdft.x</code> : ギャップ方程式を解いて超伝導ギャップ$\Delta_{n k}$を計算する.</li>
       <li><code>rpa_el.x</code> : <code>scdft.x</code>の前処理として, QEで計算したKohn-Sham軌道から
@@ -623,6 +623,9 @@ mpiexec <i>option</i> <i>PATH</i>/scdft.x < scdft.in > scdft.out
     <pre><code>
 mpiexec <i>option</i> <i>PATH</i>/deltaf.x < scdft.in > deltaf.out
     </code></pre>
+
+    <p><img src="gap_mgb2.jpg" align="middle" width="400" alt="初期画面"/>
+      MgB<sub>2</sub>のギャップ関数.</p>
     
     <p>超伝導準粒子DOS. 計算時間は比較的長い.</p>
 
