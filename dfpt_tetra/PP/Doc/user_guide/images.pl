@@ -2,11 +2,11 @@
 # Associate images original text with physical files.
 
 
-$key = q/phi;MSF=1.6;LFS=12;AAT/;
+$key = q/rangle;MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
- WIDTH="16" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img2.png"
- ALT="$ \phi$">|; 
+ WIDTH="12" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img8.png"
+ ALT="$ \rangle$">|; 
 
 $key = q/sum_{{i=1}}^{{n_s}};MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -14,17 +14,11 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img4.png"
  ALT="$ \sum_{{i=1}}^{{n_s}}$">|; 
 
-$key = q/theta;MSF=1.6;LFS=12;AAT/;
+$key = q/varphi_{{nk}}^{};MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
- WIDTH="14" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="|."$dir".q|img3.png"
- ALT="$ \theta$">|; 
-
-$key = q/rangle;MSF=1.6;LFS=12;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="12" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img8.png"
- ALT="$ \rangle$">|; 
+ WIDTH="33" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img7.png"
+ ALT="$ \varphi_{{n k}}^{}$">|; 
 
 $key = q/langle;MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -32,11 +26,17 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img5.png"
  ALT="$ \langle$">|; 
 
-$key = q/varphi_{{nk}}^{};MSF=1.6;LFS=12;AAT/;
+$key = q/phi;MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG
- WIDTH="33" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img7.png"
- ALT="$ \varphi_{{n k}}^{}$">|; 
+ WIDTH="16" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img2.png"
+ ALT="$ \phi$">|; 
+
+$key = q/theta;MSF=1.6;LFS=12;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="14" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="|."$dir".q|img3.png"
+ ALT="$ \theta$">|; 
 
 $key = q/varphi_{{{{rm{index}(i)}}^{{{rm{atom}};MSF=1.6;LFS=12;AAT/;
 $cached_env_img{$key} = q|<IMG

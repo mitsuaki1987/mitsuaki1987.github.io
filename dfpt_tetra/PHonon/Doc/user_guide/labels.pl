@@ -13,16 +13,12 @@ $noresave{$key} = "$nosave";
 # labels from external_latex_labels array.
 
 
-$key = q/_newlabelxx/;
-$external_latex_labels{$key} = q|\ifx|; 
-$noresave{$key} = "$nosave";
-
-$key = q//;
-$external_latex_labels{$key} = q|\fi|; 
-$noresave{$key} = "$nosave";
-
 $key = q/Sec:para/;
 $external_latex_labels{$key} = q|5|; 
+$noresave{$key} = "$nosave";
+
+$key = q/_oldnewlabel/;
+$external_latex_labels{$key} = q|<|; 
 $noresave{$key} = "$nosave";
 
 1;

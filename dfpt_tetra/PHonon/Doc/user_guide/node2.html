@@ -97,14 +97,13 @@ of the main Q<SMALL>UANTUM </SMALL>ESPRESSO tree:
 <TR><TD ALIGN="LEFT"><TT>Gamma/</TT></TD>
 <TD ALIGN="LEFT">: source files for Gamma-only phonon calculation</TD>
 </TR>
-<TR><TD ALIGN="LEFT"><TT>D3/</TT></TD>
-<TD ALIGN="LEFT">: source files for third-order derivative
-                  calculations</TD>
-</TR>
 </TABLE>
 <BR><EM>Important Notice:</EM> since v.5.4, many modules and routines that were
 common to all linear-response Q<SMALL>UANTUM </SMALL>ESPRESSO codes are moved into the new 
-<TT>LR_Modules</TT> subdirectory of the main tree.
+<TT>LR_Modules</TT> subdirectory of the main tree. Since v.6.0, the
+<TT>D3</TT> code for anharmonic force constant calculations has been 
+superseded by the <TT>D3Q</TT> coda, available on 
+<TT>http://www.qe-forge.org/gf/project/d3q/</TT>.
 
 <P>
 The codes available in the <TT>PHonon</TT> package can perform the following 
@@ -119,8 +118,6 @@ types of calculations:
 <LI>electron-phonon interaction coefficients for metals;
 </LI>
 <LI>interatomic force constants in real space;
-</LI>
-<LI>third-order anharmonic phonon lifetimes;
 </LI>
 <LI>Infrared and Raman (nonresonant) cross section.
 </LI>
@@ -161,7 +158,7 @@ found in the tarballs of <TT>PHonon</TT> v.5.3.
 <!--End of Navigation Panel-->
 <ADDRESS>
 kawamura
-2016-05-09
+2016-11-22
 </ADDRESS>
 </BODY>
 </HTML>
