@@ -1,15 +1,24 @@
-論文\$\\cdot\$発表等
-====================
+---
+title: This is my title
+layout: post
+---
 
-論文\$\\cdot\$解説記事
-----------------------
+論文・発表等
+============
+
+```math
+\left[-\frac{\nabla^2}{2} + V(r)\right]\varphi(r) = E \varphi(r)
+```
+
+論文・解説記事
+--------------
 
 1.  **"Visible" 5d Orbital States in a Pleochroic Oxychloride**\
     D. Hirai, T. Yajima, D. Nishio-Hamane, C. Kim, H. Akiyama, M.
     Kawamura, T. Misawa, N. Abe, T. Arima, and Z. Hiroi [J. Am.
     Chem. Soc. **139**,
     10784 (2017).](http://pubs.acs.org/doi/10.1021/jacs.7b05128)
-2.  **Quantum lattice model solver \${\\mathcal H}\\Phi\$**\
+2.  **Quantum lattice model solver $${\mathcal H}\Phi$$**\
     M. Kawamura, K. Yoshimi, T. Misawa, Y. Yamaji, S. Todo, N.
     Kawashima, [Comp. Phys. Commun. **217**,
     180 (2017).](http://www.sciencedirect.com/science/article/pii/S0010465517301200)
@@ -117,7 +126,7 @@
 ### 国内学会(口頭発表)
 
 1.  \[招待講演\]
-    **YNi~2~B~2~Cにおける異方的超伝導ギャップの第一原理計算**,\
+    **YNi<sub>2</sub>B<sub>2</sub>Cにおける異方的超伝導ギャップの第一原理計算**,\
     河村光晶, 九工大物性グループセミナー, 九州工業大学
     (北九州市), 2017年3月.
 2.  **局在基底を用いた第一原理非平衡Green関数法によるナノデバイスの電流密度計算**,\

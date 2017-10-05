@@ -1,3 +1,8 @@
+---
+title: This is my title
+layout: post
+---
+
 河村光晶HomePage
 ================
 
