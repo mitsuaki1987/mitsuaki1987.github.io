@@ -1,8 +1,3 @@
----
-title: This is my title
-layout: post
----
-
 論文・発表等
 ============
 
