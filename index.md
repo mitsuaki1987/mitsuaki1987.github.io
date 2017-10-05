@@ -1,6 +1,5 @@
 ---
-layout: default
-title: Hello
+title: Kawamura
 ---
 
 河村光晶HomePage
