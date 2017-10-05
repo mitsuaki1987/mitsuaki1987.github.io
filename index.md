@@ -11,7 +11,7 @@ News
 
 [研究内容](./research_ja.html)
 
-[論文\$\\cdot\$発表等](./paper_ja.html)
+[論文・発表等](./paper_ja.html)
 
 プログラムパッケージ
 
