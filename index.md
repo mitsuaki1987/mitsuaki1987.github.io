@@ -1,7 +1,3 @@
----
-title: Kawamura
----
-
 河村光晶HomePage
 ================
 
