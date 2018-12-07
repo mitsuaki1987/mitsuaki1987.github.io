@@ -1,0 +1,5 @@
+<map id="diag_direct::direct" name="diag_direct::direct">
+<area shape="rect" id="node2" href="$namespacescf.html#afa0875765256bb22b48f676d209415b7" title="scf::kohn_sham_eq" alt="" coords="179,5,315,32"/>
+<area shape="rect" id="node3" href="$pwdft_8_f90.html#a676d884bb05028d628a63337b149182e" title="pwdft" alt="" coords="508,5,563,32"/>
+<area shape="rect" id="node4" href="$namespacescf.html#ab2a6afb38024f53beb2371ef1d7163a1" title="scf::scf_loop" alt="" coords="363,31,460,57"/>
+</map>

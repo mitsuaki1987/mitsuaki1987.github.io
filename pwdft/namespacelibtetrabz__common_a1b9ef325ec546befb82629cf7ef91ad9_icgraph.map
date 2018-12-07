@@ -1,0 +1,27 @@
+<map id="libtetrabz_common::libtetrabz_sort" name="libtetrabz_common::libtetrabz_sort">
+<area shape="rect" id="node2" href="$namespacelibtetrabz__dbldelta__mod.html#ab55a80f67e58f58ae2eb8a9cff484044" title="libtetrabz_dbldelta\l_mod::libtetrabz_dbldelta2" alt="" coords="197,5,371,47"/>
+<area shape="rect" id="node3" href="$namespacelibtetrabz__dbldelta__mod.html#ad466e189eee97447b95457101e293ddc" title="libtetrabz_dbldelta\l_mod::libtetrabz_dbldelta_main" alt="" coords="423,35,625,76"/>
+<area shape="rect" id="node5" href="$namespacelibtetrabz__dblstep__mod.html#aae55a29b9f1487ede05c5ddfd0617281" title="libtetrabz_dblstep\l_mod::libtetrabz_dblstep2" alt="" coords="199,123,369,164"/>
+<area shape="rect" id="node6" href="$namespacelibtetrabz__dblstep__mod.html#a83e40436bd106a18c1088a9206210ab6" title="libtetrabz_dblstep\l_mod::libtetrabz_dblstep_main" alt="" coords="425,152,623,193"/>
+<area shape="rect" id="node8" href="$namespacelibtetrabz__dos__mod.html#a5bfd2bd5acf59cadfa9a4ebbff79ded5" title="libtetrabz_dos_mod\l::libtetrabz_dos_main" alt="" coords="211,240,357,281"/>
+<area shape="rect" id="node10" href="$namespacelibtetrabz__fermigr__mod.html#acdf3fc0ae7c7d3b2668da34480d2799f" title="libtetrabz_fermigr\l_mod::libtetrabz_fermigr2" alt="" coords="439,344,609,385"/>
+<area shape="rect" id="node11" href="$namespacelibtetrabz__fermigr__mod.html#a83cd93298b6fc3d5835ec48c0ebf2c8d" title="libtetrabz_fermigr\l_mod::libtetrabz_fermigr_main" alt="" coords="679,373,877,415"/>
+<area shape="rect" id="node13" href="$namespacelibtetrabz__fermigr__mod.html#a0108d9f5ebc27b676cb79d424c30922d" title="libtetrabz_fermigr\l_mod::libtetrabz_fermigr3" alt="" coords="199,357,369,399"/>
+<area shape="rect" id="node14" href="$namespacelibtetrabz__dos__mod.html#aa4e498da331ab814364cb34b8c8849cd" title="libtetrabz_dos_mod\l::libtetrabz_intdos_main" alt="" coords="204,475,364,516"/>
+<area shape="rect" id="node16" href="$namespacelibtetrabz__occ__mod.html#acbb58694cebefc1d611bb387574d0a86" title="libtetrabz_occ_mod\l::libtetrabz_occ_main" alt="" coords="211,540,357,581"/>
+<area shape="rect" id="node19" href="$namespacelibtetrabz__polcmplx__mod.html#aebb4320b6be485d29f977d92703d5406" title="libtetrabz_polcmplx\l_mod::libtetrabz_polcmplx2" alt="" coords="433,657,615,699"/>
+<area shape="rect" id="node20" href="$namespacelibtetrabz__polcmplx__mod.html#a303cfea5055930f1e7ae4238a9a8f0ec" title="libtetrabz_polcmplx\l_mod::libtetrabz_polcmplx_main" alt="" coords="673,687,883,728"/>
+<area shape="rect" id="node22" href="$namespacelibtetrabz__polcmplx__mod.html#a13826ddae4717b73289f6bd0bd8a83ad" title="libtetrabz_polcmplx\l_mod::libtetrabz_polcmplx3" alt="" coords="193,657,375,699"/>
+<area shape="rect" id="node23" href="$namespacelibtetrabz__polstat__mod.html#a7fa6af3fd4bb01a9e622974d2598b289" title="libtetrabz_polstat\l_mod::libtetrabz_polstat2" alt="" coords="440,825,608,867"/>
+<area shape="rect" id="node24" href="$namespacelibtetrabz__polstat__mod.html#a7c7e453c423fba640d9b48b6cc70c786" title="libtetrabz_polstat\l_mod::libtetrabz_polstat_main" alt="" coords="680,855,876,896"/>
+<area shape="rect" id="node26" href="$namespacelibtetrabz__polstat__mod.html#a3cbe711387f9e2494a78daf4855d38cf" title="libtetrabz_polstat\l_mod::libtetrabz_polstat3" alt="" coords="200,825,368,867"/>
+<area shape="rect" id="node4" href="$namespacelibtetrabz__dbldelta__mod.html#a39497cb566e75ffe9b0969a7f39ab6d0" title="libtetrabz_dbldelta\l_mod::libtetrabz_dbldelta" alt="" coords="695,35,861,76"/>
+<area shape="rect" id="node7" href="$namespacelibtetrabz__dblstep__mod.html#ae4c3431466029e777cabbe5d87bea666" title="libtetrabz_dblstep\l_mod::libtetrabz_dblstep" alt="" coords="696,152,860,193"/>
+<area shape="rect" id="node9" href="$namespacelibtetrabz__dos__mod.html#addb2ff4ca41802364a279d3401ae67a0" title="libtetrabz_dos_mod\l::libtetrabz_dos" alt="" coords="457,240,591,281"/>
+<area shape="rect" id="node12" href="$namespacelibtetrabz__fermigr__mod.html#a6736ccb707472d31ccbaef4b800cdd3d" title="libtetrabz_fermigr\l_mod::libtetrabz_fermigr" alt="" coords="937,373,1099,415"/>
+<area shape="rect" id="node15" href="$namespacelibtetrabz__dos__mod.html#a8ebc626872ca6fd6175ce41862d79ea7" title="libtetrabz_dos_mod\l::libtetrabz_intdos" alt="" coords="457,461,591,503"/>
+<area shape="rect" id="node17" href="$namespacelibtetrabz__occ__mod.html#ae747edfc1a99e2e7dcf03f068a7e1fd6" title="libtetrabz_occ_mod\l::libtetrabz_occ" alt="" coords="457,527,591,568"/>
+<area shape="rect" id="node18" href="$namespacelibtetrabz__occ__mod.html#aeb69990ce38bebc9d586961aa6b84901" title="libtetrabz_occ_mod\l::libtetrabz_fermieng" alt="" coords="454,592,594,633"/>
+<area shape="rect" id="node21" href="$namespacelibtetrabz__polcmplx__mod.html#a73bf8fbec1f14bacdd14c57df3fb1498" title="libtetrabz_polcmplx\l_mod::libtetrabz_polcmplx" alt="" coords="931,687,1105,728"/>
+<area shape="rect" id="node25" href="$namespacelibtetrabz__polstat__mod.html#ada89fb60bd1a147ddd57d1fe71404b30" title="libtetrabz_polstat\l_mod::libtetrabz_polstat" alt="" coords="937,855,1099,896"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="rho_v::hartree_pot" name="rho_v::hartree_pot">
+<area shape="rect" id="node2" href="$namespacefftw__wrapper.html#a340a66d2b418bc01bca7b91941b55c1c" title="V(G) e^{iGr} &#45;&gt; v(r) " alt="" coords="180,5,323,32"/>
+<area shape="rect" id="node3" href="$namespacefftw__wrapper.html#ac203731bd91598ef6e719a0822135961" title="v(r) e^{&#45;iGr} &#45;&gt; V(G) " alt="" coords="180,56,323,83"/>
+</map>
