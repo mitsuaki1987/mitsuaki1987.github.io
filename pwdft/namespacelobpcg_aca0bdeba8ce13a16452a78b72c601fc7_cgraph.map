@@ -1,0 +1,6 @@
+<map id="lobpcg::lobpcg_main" name="lobpcg::lobpcg_main">
+<area shape="rect" id="node2" href="$namespacelobpcg.html#a8327b59ba46696af992e3139ea672cb0" title="lobpcg::diag_ovrp" alt="" coords="196,5,320,32"/>
+<area shape="rect" id="node3" href="$namespacehamiltonian.html#a4807e245c5bd29b02c24a6e433d84d69" title="hamiltonian::h_psi" alt="" coords="195,56,321,83"/>
+<area shape="rect" id="node4" href="$namespacefftw__wrapper.html#a25b8d74f9da100bc316583f5d16386fb" title="Uncompress &#45;&gt; W(G) e^{iGr} &#45;&gt; w(r) " alt="" coords="369,31,528,57"/>
+<area shape="rect" id="node5" href="$namespacefftw__wrapper.html#af861010299040222db53144805b80335" title="w(r) e^{&#45;iGr} &#45;&gt; W(G) &#45;&gt; compress " alt="" coords="369,81,528,108"/>
+</map>
