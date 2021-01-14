@@ -1,4 +1,0 @@
-<map id="hamiltonian::h_psi" name="hamiltonian::h_psi">
-<area shape="rect" id="node2" href="$namespacefftw__wrapper.html#a25b8d74f9da100bc316583f5d16386fb" title="Uncompress &#45;&gt; W(G) e^{iGr} &#45;&gt; w(r) " alt="" coords="180,5,339,32"/>
-<area shape="rect" id="node3" href="$namespacefftw__wrapper.html#af861010299040222db53144805b80335" title="w(r) e^{&#45;iGr} &#45;&gt; W(G) &#45;&gt; compress " alt="" coords="180,56,339,83"/>
-</map>

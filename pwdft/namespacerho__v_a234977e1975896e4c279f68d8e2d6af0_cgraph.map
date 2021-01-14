@@ -1,7 +1,0 @@
-<map id="rho_v::init_rho_v" name="rho_v::init_rho_v">
-<area shape="rect" id="node2" href="$namespacerho__v.html#a3813003555dcf513988a47b2e5e49c8f" title="Pseudopotential Vps is computed. " alt="" coords="172,5,312,32"/>
-<area shape="rect" id="node4" href="$namespacerho__v.html#a1fd1a1e8adf179dd03329003378934ce" title="Add Hartree potential. " alt="" coords="179,56,305,83"/>
-<area shape="rect" id="node6" href="$namespacerho__v.html#abfb155a2cad76c42f2b470f2db1a8404" title="Add XC potential (LDA) " alt="" coords="191,107,293,133"/>
-<area shape="rect" id="node3" href="$namespacefftw__wrapper.html#a340a66d2b418bc01bca7b91941b55c1c" title="V(G) e^{iGr} &#45;&gt; v(r) " alt="" coords="360,5,503,32"/>
-<area shape="rect" id="node5" href="$namespacefftw__wrapper.html#ac203731bd91598ef6e719a0822135961" title="v(r) e^{&#45;iGr} &#45;&gt; V(G) " alt="" coords="360,56,503,83"/>
-</map>
