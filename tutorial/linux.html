@@ -1,0 +1,375 @@
+﻿<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>KAWAMURA, Mitsuaki Homepage</title>
+    
+    <meta name="description" content="Linux">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+    
+    <h1>Linux Howto</h1>
+    <h2>Commands for file/directory operation <br />
+    ファイルやディレクトリの操作を行うコマンド
+    </h2>
+    <ul>
+      <li><h3>ls : List directory contents ディレクトリ内のコンテンツをリストする</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ ls
+Desktop  a.out  a.tar.gz  bin  intel  lib  program  work
+[kawamura@gauss ~]$ ls program/
+HPhi  Komega  QE  cif2input  combo  openmx  respack
+[kawamura@gauss ~]$ ls -FC
+Desktop/  a.out*  a.tar.gz  bin/  intel/  lib/  program/  work/
+[kawamura@gauss ~]$ ls -l
+total 88
+drwxr-xr-x  2 kawamura ozaki  4096 Jun 14  2018 Desktop
+-rwxr-xr-x  1 kawamura ozaki 20311 Jan 29 22:23 a.out
+-rw-rw-rw-  1 kawamura ozaki 33920 Oct 10 10:21 a.tar.gz
+drwxrwxr-x  2 kawamura ozaki  4096 Oct  9 19:06 bin
+drwxr-xr-x  3 kawamura ozaki  4096 Aug  8  2018 intel
+drwxr-xr-x  2 kawamura ozaki  4096 Apr  1  2019 lib
+drwxrwxr-x  9 kawamura ozaki  4096 Jan 10 14:10 program
+drwxrwxr-x 22 kawamura ozaki 12288 Mar  9 17:12 work
+          </code></pre>
+        </h4>
+      コマンドの後にスペースをあけて、「-」から始まる文字をつけているが、これをオプションという。
+      この場合はオプションによって表示のさせ方を変えている。
+      </li>
+      <li>
+        <h3>cd : Change the current directory 現在自分が居る場所(ディレクトリ)から移動する</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ cd program/
+[kawamura@gauss program]$
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>mv : Move / rename files and directries ファイルやディレクトリを他の場所に動かす</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ mv a.txt work/
+[kawamura@gauss ~]$ mv work/a.txt b.txt
+          </code></pre>
+          2番目はファイル名を変更している(リネーム)
+        </h4>
+      </li>
+      <li>
+        <h3>cp : Copy files and directories ファイルやディレクトリをコピーする。</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ cp a.txt b.txt
+[kawamura@gauss ~]$ cp a.txt work/
+[kawamura@gauss ~]$ cp -r work/ work2/
+          </code></pre>
+          ディレクトリの中身を含めて丸ごとコピーするときにはオプション「-r」(recursive:再帰的)を加える。
+        </h4>
+      </li>
+      <li>
+        <h3>rm : remove files and directories ファイルやディレクトリを消す。</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ rm b.txt
+[kawamura@gauss ~]$ rm -r work2/
+          </code></pre>
+          ディレクトリを消すときには「-r」をつける。これにより中身ごと消える。
+          <b>元に戻すことはできないので注意</b>
+        </h4>
+      </li>
+      <li>
+        <h3>mkdir : Make directory</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ mkdir work2
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+
+    <h2>Network commands</h2>
+    <ul>
+      <li>
+        <h3>ssh-keygen : Generate public and private key pair for ssh and scp</h3>
+        <h4>
+          <pre><code>
+ssh-keygen -t rsa
+          </code></pre>
+          Then press return key.
+        </h4>
+      </li>
+      <li>
+        <h3>ssh : Connect to remote host</h3>
+        <h4>
+          <pre><code>
+kawamura@mypc:~$ ssh -Y kawamura@gauss.issp.u-tokyo.ac.jp
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>scp : Copy files/directories to/from remote host</h3>
+        <h4>
+          <pre><code>
+kawamura@mypc:~$ scp kawamura@gauss.issp.u-tokyo.ac.jp:~/a.txt .
+kawamura@mypc:~$ scp b.txt kawamura@gauss.issp.u-tokyo.ac.jp:~/
+kawamura@mypc:~$ scp -r kawamura@gauss.issp.u-tokyo.ac.jp:~/work .
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>wget :Download from Web</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ wget http://t-ozaki.issp.u-tokyo.ac.jp/openmx3.9.tar.gz
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+    
+    <h2>Text-control commands</h2>
+    <ul>
+      <li>
+        <h3>cat : display text file</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ cat a.txt
+ABCDE 10 4
+12345 8 90
+abcdf 3 20
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>less : View text file interactively</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ less a.txt
+          </code></pre>
+          Then type 'h' to see the operation.
+        </h4>
+      </li>
+      <li>
+        <h3>grep : search matching strings in a text file</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ grep 123 a.txt
+12345 8 90
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>sed : Stream editor</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ sed -e "s/ABCDE/OPQRS/g" a.txt
+OPQRS 10 4
+12345 8 90
+abcdf 3 20
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>awk : Process each row and column</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ awk '{print $2+$3, $1, $2*$3}' a.txt
+14 ABCDE 40
+98 12345 720
+23 abcdf 60
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+
+<h2>Redirect & pipe</h2>
+    <ul>
+      <li>
+        <h3>> : Standard-output redirect. Flow standard output into a file</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ date > b.txt
+[kawamura@gauss ~]$ cat b.txt
+Mon Apr 13 16:43:05 JST 2020
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>| : pipe. Connect commands</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ grep ABC a.txt
+ABCDE 10 4
+[kawamura@gauss ~]$ grep ABC a.txt | awk '{print $2}'
+10
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+    
+    <h2>Configuration</h2>
+    <ul>
+      <li>
+        <h3>alias : Create short-cut command</h3>
+        <h4>
+          <pre><code>
+alias lsfc="ls -FC"
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>export : Set environment variable</h3>
+        <h4>
+          <pre><code>
+export PATH=${PATH}:~/bin/
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>~/.basrc : configuration file.
+        It is a shell script file which is automatically executed when we log-in. We can also execute it manually as:</h3>
+        <h4>
+          <pre><code>
+[kawamura@gauss ~]$ source ~/.bashrc
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+
+    <h2>Tips for WSL</h2>
+    <ul>
+      <li>
+        <h3>Make symbolic links to Windows folder in WSL home directory</h3>
+        <h4>
+          <pre><code>
+ln -fs /mnt/c/Users/kawamura/Downloads/ ~/download
+ln -fs /mnt/c/Users/kawamura/OneDrive/ ~/onedrive
+ln -fs /mnt/c/Users/kawamura/Dropbox/ ~/dropbox
+ln -fs /mnt/c/Users/kawamura/Desktop/ ~/desktop
+ln -fs /mnt/c/Users/kawamura/ ~/win
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>Startup xlaunch</h3>
+        <h4>
+          <pre><code>
+echo "export DISPLAY=localhost:0.0" >> ~/.bashrc
+mv ~/desktop/config.xlaunch /mnt/c/Users/kawamuura/AppData/Roaming/Microsoft/Windows/Start\ Menu/Programs/Startup/
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>Xlaunch config</h3>
+        
+        <h4>Turn off "native opengl" </h4>
+      </li>
+    </ul>
+
+    <h2>Package manager</h2>
+    <ul>
+      <li>
+        <h3>apt : Install, uninstall, update linux packages</h3>
+        <h4>
+          <pre><code>
+sudo apt update
+sudo apt upgrade
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>apt search</h3>
+        <h4>
+          <pre><code>
+sudo apt install XXX
+sudo apt purge XXX
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>pip : Install, uninstall, update python packages</h3>
+        <h4>
+          <pre><code>
+sudo -H python3 -m pip install XXX
+sudo -H python3 -m pip list -O
+sudo -H python3 -m pip install -U XXX
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+    
+    <h2>Configuration-file examples</h2>
+    <ul>
+      <li>
+        <h3>~/.bashrc : Bash setting</h3>
+        <h4>
+          <pre><code>
+export DISPLAY=localhost:0.0
+export PATH=$PATH:~/bin/
+alias cp="cp -p"
+alias scp="scp -p"
+#
+# SSH key
+#
+SSH_AGENT_FILE=$HOME/.ssh-agent
+test -f $SSH_AGENT_FILE && source $SSH_AGENT_FILE
+if ! ssh-add -l > /dev/null 2>&1; then
+  ssh-agent > $SSH_AGENT_FILE
+  source $SSH_AGENT_FILE
+  ssh-add $HOME/.ssh/id_rsa
+  ssh-add $HOME/.ssh/id_rsa_fx
+fi
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>~/.vimrc : Vim setting</h3>
+        <h4>
+          <pre><code>
+colorscheme ron
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>~/.emacs : Emacs setting</h3>
+        <h4>
+          <pre><code>
+;;;;;;; Background color ;;;;;;;;;;;;;;;;;;;
+(add-to-list 'default-frame-alist '(background-color . "black"))
+;;;;;;; foreground color ;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'default-frame-alist '(foreground-color . "white"))
+;;;;;;; Set various color ;;;;;;;
+(global-font-lock-mode t)
+;;; goto--line  ;;;
+(global-set-key "\M-g" 'goto-line)
+;;; Input method  ;;;
+(setq default-input-method "japanese")
+(global-set-key (kbd "<zenkaku-hankaku>") 'toggle-input-method)
+;;; Space lather than tab
+(setq-default tab-width 4 indent-tabs-mode nil)
+;;; Be Ctrl-z unavailable
+(global-unset-key (kbd "C-z"))
+          </code></pre>
+        </h4>
+      </li>
+      <li>
+        <h3>.dircolors : Colors used for ls command</h3>
+        <h4>
+          <pre><code>
+DIR 01;36 # directory
+LINK 00;33 # symbolic link.
+          </code></pre>
+        </h4>
+      </li>
+    </ul>
+  </body>
+</html>
