@@ -163,9 +163,35 @@ data.path /home/public/program/openmx/DFT_DATA19/
     <hr />
 
     <h2 id="scp">リモートとのファイルのやり取り</h2>
+
+    このabc.datファイルをgaussに送る。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+scp abc.dat gauss.issp.u-tokyo.ac.jp:~/
+                        </code></pre>
+    次にsshでgaussにログインしてlsを実行してみると、このabc.datが送られていることが確認できる。
+    <br />
+    gauss内に作業用ディレクトリを作ってabc.datをそこに移動し、自分もそのディレクトリに行く。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+mkdir -p ~/work/methane/
+mv abc.dat ~/work/methane/
+cd ~/work/methane/
+                        </code></pre>
     <hr />
 
     <h2 id="jobsubmit">ジョブ投入</h2>
+
+    ここで、前に説明したキューイングシステムを使って、計算ノードにメタン分子の数値計算のジョブを投入する。
+    エディターを使い「dft.sh」という名前で次のようにジョブスクリプトを作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#PBS -l nodes=1:ppn=5
+#PBS -n
+source ~/.bashrc
+export OMP_NUM_THREADS=1
+cd $PBS_O_WORKDIR
+mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx Methane.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
+               </code></pre>
+    これを「qsub dft.sh」で投入する。
     <hr />
 
     <h2 id="outputfile">OpenMX出力ファイルと可視化</h2>
