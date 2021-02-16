@@ -199,7 +199,7 @@ cd ~/work/methane/
 source ~/.bashrc
 export OMP_NUM_THREADS=1
 cd $PBS_O_WORKDIR
-mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx あｂｃ.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
+mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx abc.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
                </code></pre>
     これを「qsub dft.sh」で投入する。
     <hr />
