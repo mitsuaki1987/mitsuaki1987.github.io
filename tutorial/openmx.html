@@ -173,7 +173,7 @@ data.path /home/public/program/openmx/DFT_DATA19/
 
     このabc.datファイルをgaussに送る。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
-scp abc.dat gauss.issp.u-tokyo.ac.jp:~/
+scp abc.dat ユーザー名@gauss.issp.u-tokyo.ac.jp:~/
                         </code></pre>
     次にsshでgaussにログインしてlsを実行してみると、このabc.datが送られていることが確認できる。
     <br />
@@ -217,8 +217,8 @@ abc.cif          abc.dat#  abc.ene        abc.md2  abc.tden.cube  abc.vhart.cube
     <br />
     PCのほうに戻って、計算結果のcubeファイルをscpでgaussから回収する。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
-scp gauss.issp.u-tokyo.ac.jp:~/work/methane/*.cube
-                        </code></pre>
+scp ユーザー名@gauss.issp.u-tokyo.ac.jp:~/work/methane/*.cube
+</code></pre>
     これは.cubeで終わるファイルをまとめて持ってくるコマンド。
 
   </body>
