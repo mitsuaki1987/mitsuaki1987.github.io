@@ -16,13 +16,26 @@
     
   </head>
   <body bgcolor="CCFFCC">
-    
+
     <h1>Linux Howto</h1>
-    <h2>Commands for file/directory operation <br />
-    ファイルやディレクトリの操作を行うコマンド
+
+    <h3>
+      <p><a href="#fd">Commands for file/directory operation ファイルやディレクトリの操作を行うコマンド</a></p>
+      <p><a href="#net">Network commands ネットワーク関連のコマンド<</a></p>
+      <p><a href="#text">Text-control commands テキスト操作のコマンド</a></p>
+      <p><a href="#redirect">Redirect & pipe コマンドの出力、コマンドへの入力、コマンドの接続を行う構文</a></p>
+      <p><a href="#configuration">Configuration 設定用コマンド</a></p>
+      <p><a href="#package">Package manager パッケージのインストール</a></p>
+      <p><a href="#editor">Editor テキストエディター</a></p>
+    </h3>
+    <hr />
+    <h2 id="fd">
+      Commands for file/directory operation <br />
+      ファイルやディレクトリの操作を行うコマンド
     </h2>
     <ul>
-      <li><h3>ls : List directory contents ディレクトリ内のコンテンツをリストする</h3>
+      <li>
+        <h3>ls : List directory contents ディレクトリ内のコンテンツをリストする</h3>
         <h4>
           <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 [kawamura@gauss ~]$ ls
@@ -43,8 +56,8 @@ drwxrwxr-x  9 kawamura ozaki  4096 Jan 10 14:10 program
 drwxrwxr-x 22 kawamura ozaki 12288 Mar  9 17:12 work
           </code></pre>
         </h4>
-      コマンドの後にスペースをあけて、「-」から始まる文字をつけているが、これをオプションという。
-      この場合はオプションによって表示のさせ方を変えている。
+        コマンドの後にスペースをあけて、「-」から始まる文字をつけているが、これをオプションという。
+        この場合はオプションによって表示のさせ方を変えている。
       </li>
       <li>
         <h3>cd : Change the current directory 現在自分が居る場所(ディレクトリ)から移動する</h3>
@@ -96,8 +109,9 @@ drwxrwxr-x 22 kawamura ozaki 12288 Mar  9 17:12 work
         </h4>
       </li>
     </ul>
+    <hr />
 
-    <h2>Network commands</h2>
+    <h2 id="net">Network commands ネットワーク関連のコマンド</h2>
     <ul>
       <li>
         <h3>ssh-keygen : Generate public and private key pair for ssh and scp</h3>
@@ -135,8 +149,9 @@ kawamura@mypc:~$ scp -r kawamura@gauss.issp.u-tokyo.ac.jp:~/work .
         </h4>
       </li>
     </ul>
-    
-    <h2>Text-control commands</h2>
+    <hr />
+
+    <h2 id="text">Text-control commands テキスト操作のコマンド</h2>
     <ul>
       <li>
         <h3>cat : display text file</h3>
@@ -190,8 +205,9 @@ abcdf 3 20
         </h4>
       </li>
     </ul>
+    <hr />
 
-<h2>Redirect & pipe</h2>
+    <h2 id="redirect">Redirect & pipe コマンドの出力、コマンドへの入力、コマンドの接続を行う構文</h2>
     <ul>
       <li>
         <h3>> : Standard-output redirect. Flow standard output into a file</h3>
@@ -215,8 +231,9 @@ ABCDE 10 4
         </h4>
       </li>
     </ul>
-    
-    <h2>Configuration</h2>
+    <hr />
+
+    <h2 id="configuration">Configuration 設定用コマンド</h2>
     <ul>
       <li>
         <h3>alias : Create short-cut command</h3>
@@ -235,8 +252,10 @@ export PATH=${PATH}:~/bin/
         </h4>
       </li>
       <li>
-        <h3>~/.basrc : configuration file.
-        It is a shell script file which is automatically executed when we log-in. We can also execute it manually as:</h3>
+        <h3>
+          ~/.basrc : configuration file.
+          It is a shell script file which is automatically executed when we log-in. We can also execute it manually as:
+        </h3>
         <h4>
           <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 [kawamura@gauss ~]$ source ~/.bashrc
@@ -244,8 +263,9 @@ export PATH=${PATH}:~/bin/
         </h4>
       </li>
     </ul>
+    <hr />
 
-    <h2>Tips for WSL</h2>
+    <h2 id="wsltips">Tips for WSL</h2>
     <ul>
       <li>
         <h3>Make symbolic links to Windows folder in WSL home directory</h3>
@@ -270,12 +290,13 @@ mv ~/desktop/config.xlaunch /mnt/c/Users/kawamuura/AppData/Roaming/Microsoft/Win
       </li>
       <li>
         <h3>Xlaunch config</h3>
-        
+
         <h4>Turn off "native opengl" </h4>
       </li>
     </ul>
+    <hr />
 
-    <h2>Package manager</h2>
+    <h2 id="package">Package manager パッケージのインストール</h2>
     <ul>
       <li>
         <h3>apt : Install, uninstall, update linux packages</h3>
@@ -306,7 +327,40 @@ sudo -H python3 -m pip install -U XXX
         </h4>
       </li>
     </ul>
-    
+    <hr />
+    <h2 id="editor">Editor テキストエディター</h2>
+    様々なテキストファイルを開いて編集操作を行うプログラムをエディターという(Windowsでは「メモ帳」など)。
+    エディターは「vim」「emacs」などさまざまあり、好みや目的に応じてどれを使うかを決めるわけであるが、
+    はじめてつかうときには「nano」(GNU nano)を使うのが良いと思う。
+    機能は限られるが、特に覚える事はない。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+nano
+          </code></pre>
+    なにも付けずにこのコマンドを実行すると空のファイル(保存前)が開かれる。
+    既存のファイルを開くときには
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+nano abc.txt
+          </code></pre>
+    とすると、このような画面になる。
+
+<pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+GNU nano 2.9.3                                                                             abc.txt
+
+ABCDE 10 4
+12345 8 90
+abcdf 3 20
+
+
+^G Get Help      ^O Write Out     ^W Where Is      ^K Cut Text      ^J Justify       ^C Cur Pos       M-U Undo         M-A Mark Text    M-] To Bracket   ^B Back          ^Left Prev Word
+^X Exit          ^R Read File     ^\ Replace       ^U Uncut Text    ^T To Spell      ^_ Go To Line    M-E Redo         M-6 Copy Text    M-W WhereIs Next ^F Forward       ^Right Next Word
+                </code></pre>
+    画面下部に出ているのはショートカットキー一覧であり、ファイルの保存等の操作をこれを用いて行う。
+    例えば「^X Exit」はCtrlキーを押しながら「x」を押すとnanoが終了する事を意味する。終了する際ファイルを保存するか聞かれる場合もある。
+    「M-U Undo」はAltキーを押しながら「u」を押すとアンドゥ、すなわち直前の入力を取り消して元に戻す操作が行われる事を意味する。
+
+    <hr />
+
     <h2>Configuration-file examples</h2>
     <ul>
       <li>
