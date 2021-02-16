@@ -1,0 +1,68 @@
+﻿<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>OpenMXチュートリアル</title>
+    
+    <meta name="description" content="河村光晶HomePage">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+    <h1>OpenMXチュートリアル</h1>
+    <hr>
+
+    ここではOpenMXを使って分子の計算を行う。
+
+    <h3>
+      <p><a href="#sdffile">分子構造ファイルを入手する</a></p>
+      <p><a href="#sdftoxyz">分子構造ファイルの形式変換</a></p>
+      <p><a href="#openmxviewer">OpenMX-viewer</a></p>
+      <p><a href="#inputfile">OpenMX入力ファイル</a></p>
+      <p><a href="#scp">リモートとのファイルのやり取り</a></p>
+      <p><a href="#jobsubmit">ジョブ投入</a></p>
+      <p><a href="#outputfile">OpenMX出力ファイルと可視化</a></p>
+    </h3>
+    <hr>
+
+    <hr />
+    <h2 id="sdffile">分子構造ファイルを入手する</h2>
+
+    ここでは題材としてメタン分子を扱う。
+    Googleで「Methane Mol-Instincts」で検索をする。
+
+    <hr />
+    <h2 id="sdftoxyz">分子構造ファイルの形式変換</h2>
+
+    得られたSDF形式のファイルをOpenBabelというソフトウェアを使いXYZ形式に変換する。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+sudo apt install openbabel
+                   </code></pre>
+    macOSの場合はHomeBrew等を用いてインストールする。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+babel Methane.sdf Methane.xyz
+                   </code></pre>
+
+
+    <hr />
+    <h2 id="openmxviewer">OpenMX-viewer</h2>
+    <hr />
+    <h2 id="inputfile">OpenMX入力ファイル</h2>
+    <hr />
+    <h2 id="scp">リモートとのファイルのやり取り</h2>
+    <hr />
+    <h2 id="jobsubmit">ジョブ投入</h2>
+    <hr />
+    <h2 id="outputfile">OpenMX出力ファイルと可視化</h2>
+
+  </body>
+</html>

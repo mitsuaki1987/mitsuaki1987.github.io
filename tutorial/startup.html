@@ -1,0 +1,326 @@
+﻿<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>はじめのチュートリアル</title>
+    
+    <meta name="description" content="河村光晶HomePage">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+    <h1>はじめのチュートリアル</h1>
+    <hr>
+
+    ここでは各自のPCの設定やLinuxの使い方、ワークステーションへのログインの仕方とジョブの投げ方を習得する。
+
+    <h3>
+      <p><a href="#pcsetting">PCの設定</a></p>
+      <p><a href="#workstationhard">使用する計算機(ワークステーション)のハードウェア構成</a></p>
+      <p><a href="#workstationlogin">ワークステーションへのログイン</a></p>
+      <p><a href="#workstationsoft">ワークステーションのソフトウェア</a></p>
+      <p><a href="#queue">キューイングシステムによるジョブ投入</a></p>
+    </h3>
+    <hr>
+
+    <h2 id="pcsetting">PCの設定</h2>
+
+    <p>
+      大規模な(重い)数値計算を行うときにはスーパーコンピューターや、それより小規模なワークステーションを用いる。
+      それらのコンピューターでは大抵の場合LinuxというOSが使われている。
+      とくに遠隔でLinuxを使う場合には、マウスをつかって色々なウィンドウ操作(グラフィカルユーザーインターフェース, GUI)を行うことはあまり無く、
+      下の図のようにターミナルという、テキスト入力と表示だけができる箱のようなものを使ってキーボードのみで操作をする。
+      これをキャラクター(もしくはコンソール)ユーザーインターフェース(CUI)あるいはコマンドラインインターフェース(CLI)という。
+      <br>
+      <img src="cui.jpg" height="300" />
+      <br>
+      CUIでコンピューターの操作のために入力するワードの事をコマンドという。
+      コマンドはたくさんあり、自分で作ることもできる。
+      それぞれのコマンドがどういう役割かを覚えるのは大変かもしれないが、よく使うコマンドは勝手に覚えていくのではないかと思う。
+    </p>
+    <p>
+      遠隔のマシン(リモートホスト)に合わせて、自分が操作するPCにもCUI環境を整えておいた方が便利である。
+      そのための設定をまず初めに行う。
+    </p>
+
+    <h3>Linuxの場合</h3>
+
+    <p>
+      普段からLinuxをPCで使っている場合には、既にコマンドライン操作にも慣れていると思われるので、特段のチュートリアルは必要ない。
+    </p>
+
+    <h3>macOS/UNIX/BSDの場合</h3>
+
+    <p>
+      iMacやMacBookを使っている場合には、ターミナルを用いてコマンドライン操作を行う。
+      macOSはUNIXの亜流のひとつであり、LinuxもUNIX互換として生まれた(歴史についてはWikipedia等を参照)ので、両者はコマンド等が似ている。
+    </p>
+
+    <h3>Windowsの場合</h3>
+
+    <p>
+      WindowsにもコマンドプロンプトやPowershellといったCUIが備わっているが、使われているコマンドなど(Windowsではコマンドレットと呼ばれる)がLinuxのものと大きく異なるので、
+      それとは違う別の仕組みを用いる。
+      それは<b>Windows Subsystem Linux (WSL)</b>というもので、Windows10の途中から導入された。
+      WSLにはWSL1とWSL2があるが、2021/2現在の私の主観ではWSL1の方が使い勝手が良いと思う。
+      スペックの低いPCでWSL2を使ったときに、動作がもっさりするという事例があった。
+      Windows10の最近のバージョンではWSL2がデフォルトになっているので、<b>でデフォルトをWSL1に変える操作を途中で行う</b>。
+      ただし、既にWSL2を使って慣れている場合にはあえて変える必要はない。
+      WSL1⇔WSL2の変更はインストール後でもいつでも簡単にできる。
+    </p>
+    <p>
+      WSLのインストールにはこの記事が参考になる。
+    </p>
+    <a href="https://qiita.com/yoshige/items/dbc85b048fba51e597ee" target="_blank">初心者のためのWSL( 1 ) ~初期設定,CUI設定編~</a>
+    <br>
+    <a href="https://qiita.com/yoshige/items/7a17bb7a3582d72a7e48" target="_blank">初心者のためのWSL( 2 ) ~GUI設定,デスクトップ環境設定編~</a>
+    <br>
+    ただし、追加で以下の点も留意して設定を行う。
+    <ul>
+      <li>
+        上の一つ目のリンクで、「2.インストール」に行く前に、デフォルトのバージョンをWSL1にする。
+        それには、コマンドプロンプト(cmd.exe)を立ち上げて
+        <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+wsl --set-default-version 1
+                   </code></pre>
+        を実行する。
+      </li>
+      <li>
+        上の一つ目のリンクで、「2.インストール」の中で、Microsoft Storeから「Ubuntu」を選んでインストールするとある。
+        Storeで「Ubuntu」で検索すると「Ubuntu」、「Ubuntu 20.04 LTS」、「Ubuntu 18.04 LTS」の3つが出てくるが、この中で最初の二つは同じものであり、
+        どちらもバージョン20.04がインストールされる。
+        ところが、WSL1とUbuntu20.04の組み合わせで不具合が生じるという報告があった。
+        <br />
+        <a href="https://qiita.com/AumyF/items/eaf42dd3345a2285ff9e">(今はまだ)WSL1にUbuntu 20.04を入れるな</a>
+        <br />
+        今は既にパッチが充てられて、直っている場合が多いと思うが、PCの構成によってはアップデートが来る時間差が生じるので、
+        <b>18.04をインストールした方が無難である</b>。
+        できることは20.04でも18.04でもほぼ変わらない(セキュリティパッチなども同様)。
+      </li>
+    </ul>
+    ちなみにこの「Ubuntu」はLinuxの「ディストリビューション」のひとつで、
+    ディストリビューションはLinuxのメインとなる「カーネル」に何を付加していくかで個性が分かれるもので、
+    好みや役割に応じて選択してインストールする。
+    Ubuntuのほかに「CentOS」や「Slackware」などたくさんある。
+    我々の用いるワークステーションgaussにはCentOSが入っているが、
+    その辺りの違いはそれほど気にならない。
+    <br>
+
+    <h3>Linuxの操作に慣れる</h3>
+
+    実際にコマンドを実行しつつLinuxの操作に慣れる。
+    <br />
+    <a href="linux.html">Linux覚書</a>
+    <br />
+    コマンドやファイル名の入力や途中でTabキーを押すと、自動的に残りの文字が補完される。
+    例として、「ifc」と打ってTabキーを押すと自動的に補完されて「ifconfig」となる。
+    補完候補が複数ある時には何も出てこないが、その場合はもう一度Tabキーを押すと候補一覧が表示される。例えば、
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code class="language-bash">
+kawamura@kawamura:~$ set[ここでTabを2回押す]
+set           setcap        setfont       setleds       setmetamode   setsid        setupcon      setvtrgb
+setarch       setfacl       setkeycodes   setlogcons    setpci        setterm       setvesablank  setxkbmap
+               </code></pre>
+
+    <h3>SSH鍵ペアの作成</h3>
+
+    この後の<a href="#workstationlogin">ワークステーションへのログイン</a>で必要になる「SSH鍵」のペア、
+    すなわち「秘密鍵」と「公開鍵」を作成する。
+    秘密鍵と公開鍵は「鍵」と「鍵穴」のような関係で、作った公開鍵の方をあらかじめ色々な方法で遠隔のコンピューター(これからリモートログインしようとしている先)
+    に置いておき、自分は秘密鍵を持ってそこに入りに行く。
+    ポイントは<b>公開鍵は人に渡したりしても問題はないが(※素因数分解が高速で出来ると危ないかも)、秘密鍵は絶対に人に渡したり見せては行けない</b>ということである。
+    <br />
+    次のコマンドを実行する。
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ssh-keygen -t rsa
+                </code></pre>
+    その後、鍵を保存する場所や、パスフレーズを聞かれる(入力まちになる)が、その都度何も入力せずリターンキーを押すとデフォルト設定が使われる。
+    パスフレーズについては秘密鍵が流出したときなどはあった方が良いが無くても(何も入力せずリターンキー)使える。
+
+    このコマンドを実行すると、(デフォルトではでは)ホームディレクトリ以下の.ssh/というディレクトリが作られ、そこに鍵が作られる。
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+kawamura@kawamura:~$ ls .ssh
+id_rsa  id_rsa.pub
+               </code></pre>
+    id_rsa.pubが公開鍵となる。この公開鍵は
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+kawamura@kawamura:~$ cat .ssh/id_rsa.pub
+ssh-rsa AAA長いランダムな文字列7gH kawamura@kawamura
+                </code></pre>
+    のような1行のテキストファイルになっている。
+    gaussではこれをメールなどに貼り付けて管理人に送り、管理人がその公開鍵をgauss内の適切な場所に設置する。
+
+    <h3>WindowsとWSLでのファイルのやり取り</h3>
+
+    Windows本体側からWSL内のファイルを見たりいじったりするのは<b>不具合を起こすのであまりおすすめしない</b>。
+    そのかわりにWindows本体側のファイルをWSL側からすぐにアクセス出来るようにしておくのが便利である。
+    それは以下のようにする。
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ln -fs /mnt/c/Users/Windowsでのユーザー名/ ~/win
+      </code></pre>
+    こうするとWSLからWindowsのファイルを見たり、操作したりできる。
+    <pre style="    border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+kawamura@kawamura:~$ ls ~/win/
+'3D Objects'                                                                                    NetHood
+AppData                                                                                        OneDrive
+'Application Data'                                                                              Pictures
+Contacts                                                                                       PrintHood
+Cookies                                                                                        Recent
+Desktop                                                                                        Roaming
+Documents                                                                                     'Saved Games'
+Downloads                                                                                      Searches
+Dropbox                                                                                        SendTo
+Favorites                                                                                     'Start Menu'
+IntelGraphicsProfiles                                                                          Templates
+Links                                                                                          Videos
+'Local Settings'                                                                                ntuser.dat.LOG1
+MicrosoftEdgeBackups                                                                           ntuser.dat.LOG2
+Music                                                                                          ntuser.ini
+'My Documents'                                                                                  program
+NTUSER.DAT                                                                                     source
+NTUSER.DAT{2a070628-fbcc-11ea-8b2e-e815d635c81c}.TM.blf                                        work
+NTUSER.DAT{2a070628-fbcc-11ea-8b2e-e815d635c81c}.TMContainer00000000000000000001.regtrans-ms  'スタート メニュー'
+               </code></pre>
+    <hr />
+    <h2 id="workstationhard">使用する計算機(ワークステーション)のハードウェア構成</h2>
+
+    我々の使うワークステーションはこのような構成になっている。
+    <br />
+    <img src="gauss.svg" height="400" />
+    <br />
+    1台のフロントエンドマシンと13台の計算用マシンがある(node:ノードというのは「台」「マシン」と同義)。
+    計算ノード(Computational node)のスペックは以下の通り。
+    <ul>
+      <li>CPU : Intel Xeon Broadwell 14cores×2 (28 cores/node)</li>
+      <li>RAM : 64 GB / node</li>
+      <li>Disk : 計算ノード、ログインノードで共有されている保存領域が約5.5 TB</li>
+    </ul>
+    注意点としては、<b>ログインノードではなるべく重い処理を行わない</b>。
+    なにが「重い処理」かは個人の裁量に任せる。
+    例としては、OpenMXによる並列数値計算はログインノードでは行わず、「キューイングシステム」というものを用いて計算ノードで実行する。
+    「軽い処理」はグラフのプロットなど。
+
+    <hr>
+
+    <h2 id="workstationlogin">ワークステーションへのログイン</h2>
+
+    PCのWSLから以下のコマンドを実行する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ssh -Y ユーザー名@gauss.issp.u-tokyo.ac.jp
+            </code></pre>
+    最初に実行したときのみ
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+The authenticity of host 'gauss.issp.u-tokyo.ac.jp (157.82.227.175)' can't be established.
+RSA key fingerprint is SHA256:文字列.
+Are you sure you want to continue connecting (yes/no)?
+            </code></pre>
+    と出てくるので、「yes」と打ってリターンキーを押す。
+
+    <hr>
+
+    <h2 id="workstationsoft">ワークステーションのソフトウェア</h2>
+
+    ワークステーション「gauss」には基本的なLinuxプログラムの他に、
+    <ul>
+      <li>Intel C/C++/Fortranコンパイラー : 特にIntel製CPUでパフォーマンスが向上する</li>
+      <li>Intel Math Kernel Library : 固有値計算、高速フーリエ変換などの数値計算ライブラリ</li>
+      <li>Torque : キューイングシステム、次の節で説明する</li>
+    </ul>
+    また、/home/public/bin/以下にOpenMX(コマンド名としてはopenmx)などの様々な物性物理計算プログラムが置いてある。
+
+    <hr>
+
+    <h2 id="queue">キューイングシステムによるジョブ投入</h2>
+
+    gaussには13台の計算ノード(gauss01～gauss13)がつながっている。
+    ユーザーは実行したいコマンドをひとまとめにした「指示書」のようなものを作成し、
+    これをキューイングシステムを用いて「投入」する。
+    この指示書の事を「ジョブスクリプト」という。
+    <br />
+    試しにこのようなジョブスクリプトをgauss上で作ってみる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#PBS -l nodes=1
+#PBS -n
+cd $PBS_O_WORKDIR
+echo "test job"
+date
+hostname
+pwd
+sleep 30
+date
+               </code></pre>
+    これをsample.shというファイル名で保存する。
+    <ul>
+      <li>1行目はこのファイルがBourne Shell(ボーンシェル)形式で書かれている事を宣言している。</li>
+      <li>2行目はこのジョブでは1ノード使って計算することを宣言している。</li>
+      <li>3行目はこのジョブが実行されているノードでは他のジョブが実行されないように定めている。</li>
+      <li>4行目では、このあとで出る「qsub」コマンドが実行されたディレクトリに移動する。</li>
+      <li>5行目では「test job」という文字を出力する。</li>
+      <li>6,10行目の「date」は現在の日付と時刻を出力するコマンド</li>
+      <li>7行目の「hostname」はホスト名(コンピューターの名前)を出力するコマンド</li>
+      <li>8行目の「pwd」は現在いるディレクトリ名を出力するコマンド</li>
+      <li>9行目の「sleep」は指定した秒数(この場合30秒)何もしないで待つコマンド</li>
+    </ul>
+    ジョブスクリプトを使って、次のコマンドで「ジョブ」の投入を行う。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+qsub sample.sh
+               </code></pre>
+    ここで続けて
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+qstat -a
+               </code></pre>
+    を実行すると、
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+[kawamura@gauss work]$ qstat -a
+
+gauss:
+                                                                                  Req'd    Req'd       Elap
+Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory   Time    S   Time
+----------------------- ----------- -------- ---------------- ------ ----- ------ ------ --------- - ---------
+15754.gauss             kawamura    default  sample.sh         21544     1      1    --        --  R  00:00:00
+               </code></pre>
+    となって、実行されている、もしくは実行待ちのジョブ一覧が表示される。
+    <br />
+    上で書かれているように、異なるジョブが同時に同じノードでは実行されないようになっている。
+    もし、すべての計算ノードがジョブで埋まっているときには、ジョブが終わってノードに空きができるまで待ち状態となる。
+    その場合、上の「S」(Status)が「R」(Running)ではなく「Q」となる。
+
+    30秒ほど経ったあとにもう一度「qstat -a」を実行してみると、自分のジョブが消えている(終わっている)事が分かる。
+    また、ジョブを投入したディレクトリに「sample.sh.o番号」と「sample.sh.e番号」というファイルが作られている。
+    この「番号」にはジョブの整理番号が入る。上の例では通算15754番目のジョブを意味する。
+    「sample.sh.o番号」の方にはコマンドを実行したときの出力(標準出力)が、
+    「sample.sh.e番号」の方にはエラー出力が記録されている(この例ではエラーにはなにも書かれないはず)。
+    hostnameコマンドの出力に対応して、gauss01～gauss13までのどれかのホスト名が書かれているはずで、
+    それがジョブが実際に走ったホスト名を意味する。
+
+    <h3>並列実行</h3>
+
+    一度に複数のCPUコアを使ってプログラムを実行することが可能である。
+    sample.shを次のように書き換えてみる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#PBS -l nodes=1:ppn=28
+#PBS -n
+cd $PBS_O_WORKDIR
+mpiexec -hostfile $PBS_NODEFILE hostname
+               </code></pre>
+    この四行目で「hostname」コマンドを並列実行している。
+    プロセス数(これはいくつのCPUコアが使われているか、におおむね対応する)はこの場合1行目で指定されており、
+    「ppn=28」がノード当たりのプロセス数(processes per node)が28であることを意味する。
+    実際に出力ファイルを見ると、ホスト名が28個出力されている事が分かる。
+
+    <br />
+    この例では単に同じコマンドが同じように28個同時に実行されただけだが、
+    実行時にプロセス間で通信を行い、数値計算を分担して行うのが本来の使い方で、
+    そのようなプロセス間の通信を行う方式のひとつが<b>Message Passing Interface(MPI)</b>である。
+
+  </body>
+</html>
