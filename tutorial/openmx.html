@@ -64,11 +64,14 @@ wget 上記でコピーしたリンクのURL
 sudo apt install openbabel
                    </code></pre>
     macOSの場合はHomeBrew等を用いてインストールする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+brew install open-babel
+                         </code></pre>
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 babel SDFファイル名 methane.xyz
                    </code></pre>
-    こうして新しくmethane.xyzというふぁいるが作られる。
+    こうして新しくmethane.xyzというファイルが作られる。
     それでは「cat methane.xyz」という風にcatコマンドを実行して、このファイルの中身を見てみよう。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
   5
@@ -84,6 +87,7 @@ babel SDFファイル名 methane.xyz
     そのあとは各原子について元素記号とデカルト座標(単位Å)が並んでいる。
 
     <hr />
+
     <h2 id="openmxviewer">OpenMX-viewer</h2>
 
     <a href="http://www.openmx-square.org/viewer/" target="_blank">OpenMX Viewer</a>は上で説明したXYZ形式のような構造データから
@@ -95,6 +99,7 @@ babel SDFファイル名 methane.xyz
     これを作業用ディレクトリの中に保存する。
 
     <hr />
+
     <h2 id="inputfile">OpenMX入力ファイル</h2>
 
     保存したファイルは「abc.dat」という名前になっていると思うが、これをcatやless等のコマンドで表示してみる。
@@ -162,6 +167,8 @@ data.path /home/public/program/openmx/DFT_DATA19/
 
     <hr />
 
+
+
     <h2 id="scp">リモートとのファイルのやり取り</h2>
 
     このabc.datファイルをgaussに送る。
@@ -170,6 +177,7 @@ scp abc.dat gauss.issp.u-tokyo.ac.jp:~/
                         </code></pre>
     次にsshでgaussにログインしてlsを実行してみると、このabc.datが送られていることが確認できる。
     <br />
+
     gauss内に作業用ディレクトリを作ってabc.datをそこに移動し、自分もそのディレクトリに行く。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 mkdir -p ~/work/methane/
@@ -177,6 +185,8 @@ mv abc.dat ~/work/methane/
 cd ~/work/methane/
                         </code></pre>
     <hr />
+
+
 
     <h2 id="jobsubmit">ジョブ投入</h2>
 
@@ -189,12 +199,27 @@ cd ~/work/methane/
 source ~/.bashrc
 export OMP_NUM_THREADS=1
 cd $PBS_O_WORKDIR
-mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx Methane.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
+mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx あｂｃ.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
                </code></pre>
     これを「qsub dft.sh」で投入する。
     <hr />
 
     <h2 id="outputfile">OpenMX出力ファイルと可視化</h2>
+
+    ジョブが終わった状態でディレクトリの中身を見てみる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+[kawamura@gauss met]$ ls
+15761.gauss.out  abc.dat   abc.dden.cube  abc.md   abc.out        abc.v0.cube     abc.xyz  dft.sh         dft.sh.o15761
+abc.cif          abc.dat#  abc.ene        abc.md2  abc.tden.cube  abc.vhart.cube  abc_rst  dft.sh.e15761
+                     </code></pre>
+    「15761.gauss.out」や「abc.out」をlessコマンド表示させて、それぞれの項目の意味するところを考える。
+
+    <br />
+    PCのほうに戻って、計算結果のcubeファイルをscpでgaussから回収する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+scp gauss.issp.u-tokyo.ac.jp:~/work/methane/*.cube
+                        </code></pre>
+    これは.cubeで終わるファイルをまとめて持ってくるコマンド。
 
   </body>
 </html>
