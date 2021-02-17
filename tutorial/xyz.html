@@ -125,7 +125,7 @@ prod = numpy.dot(pos[3, :], pos[0, :])
 
     ノルムはこの応用で次のように書く。sqrtはsquare-root(二乗根)を意味する。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
-norm = numpy.sqrt(numpy.dot(pos[3, :], pos[0, :]))
+norm = numpy.sqrt(numpy.dot(dv, dv))
       </code></pre>
 
     <h3>行列を使った相似変換</h3>
