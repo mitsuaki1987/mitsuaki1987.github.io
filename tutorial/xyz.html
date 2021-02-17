@@ -79,6 +79,96 @@ sudo -H python3 -m pip install numpy
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 python3 -m notebook --no-browser
             </code></pre>
-    URLが3個ほど表示されるので、その中で「http://localhost:8888」から始まるものを適当なブラウザで開く。
+    URLがおそらく3個表示されるので、その中で「http://localhost:8888」から始まるものを適当なブラウザで開く。
+
+    <h3>XYZファイルを読み込んで元素記号と座標を配列として記録する。</h3>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+import numpy
+atom = []
+pos = []
+nline = 0
+with open("methane.xyz", "r") as f:
+    lines = f.readlines()
+    for line in lines:
+        if nline > 1:
+        atom.append(line.split()[0])
+        pos.append(line.split()[1:4])
+        nline += 1
+pos = numpy.array(pos, dtype=numpy.float_)
+print(atom)
+print(pos)
+</code></pre>
+
+    配列posには次のような<i>N</i><sub>atom</sub>行×3列の行列が入っている。
+    \[
+    \begin{pmatrix}
+    x_1 & y_1 & z_1 \\
+    x_2 & y_2 & z_2 \\
+    x_3 & y_3 & z_3 \\
+    x_4 & y_4 & z_4 \\
+    x_5 & y_5 & z_5 \\
+    \end{pmatrix}
+    \]
+    ここで、$(x_n, y_n, z_n)$は<i>n</i>番目の原子の座標である。
+
+    <h3>ベクトルの操作</h3>
+
+    0番の原子のベクトル(沿え字は0から始まる)と3番の原子のベクトルの差ベクトルは次のようになる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+dv = pos[3, :] - pos[0, :]
+      </code></pre>
+
+    ベクトルの内積(ドット積)はこのように書く。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+prod = numpy.dot(pos[3, :], pos[0, :])
+      </code></pre>
+
+    ノルムはこの応用で次のように書く。sqrtはsquare-root(二乗根)を意味する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+norm = numpy.sqrt(numpy.dot(pos[3, :], pos[0, :]))
+      </code></pre>
+
+    <h3>行列を使った相似変換</h3>
+
+    <i>z</i>軸周りの180°回転を行う行列は次のようにして作る
+
+<pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+z180 = numpy.array([[-1, 0, 0],
+                    [0, -1, 0],
+                    [0, 0, 1]], dtype=numpy.float_)
+        </code></pre>
+    これを座標ベクトルにかける演算
+    \[
+    \begin{pmatrix}
+    x_1 & y_1 & z_1 \\
+    x_2 & y_2 & z_2 \\
+    x_3 & y_3 & z_3 \\
+    x_4 & y_4 & z_4 \\
+    x_5 & y_5 & z_5 \\
+    \end{pmatrix}
+    \begin{pmatrix}
+    -1 & 0 & 0 \\
+    0 & -1 & 0 \\
+    0 & 0 & 1 \\
+    \end{pmatrix}
+    \]
+    は次のように書く。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+numpy.dot(pos, z180)
+        </code></pre>
+
+    <h3>ファイル出力</h3>
+
+    ファイルへの出力は次のようにして行う。
+<pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+with open("temp.xyz", mode="w") as f:
+    print(len(atom), file=f)
+    print("rotated", file=f)
+    for i in range(len(atom)):
+        print(atom[i], pos[i,0], pos[i,1], pos[i,2], file=f)
+          </code></pre>
+    これは「temp.xyz」という名前のファイルに出力している。
+    catコマンドでファイルの中身を見てみよう。
+
   </body>
 </html>
