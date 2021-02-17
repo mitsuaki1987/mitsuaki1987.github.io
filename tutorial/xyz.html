@@ -1,0 +1,84 @@
+﻿<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>構造ファイルを編集するプログラムを作ろう</title>
+    
+    <meta name="description" content="Linux">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+
+    <h1>構造ファイルを編集するプログラムを作ろう</h1>
+    <hr>
+
+    <h3>
+      <p><a href="#problem">問題設定</a></p>
+      <p><a href="#xyz">xyzファイル</a></p>
+      <p><a href="#python">プログラム言語「python」</a></p>
+    </h3>
+    <hr />
+    <h2 id="problem">問題設定</h2>
+
+    最終的にこのような構造を作る。
+    <p><img src="conduct1.svg" height="200" /></p>
+    このとき、端子(青色の原子)は<i>x</i>軸方向に一列に並んでいるとする。
+    <br />
+    中心に置く分子は、検索をしてXYZ形式の構造ファイルとして得られるものとする。
+    <br />
+    端子が<i>x</i>軸方向に一列に並んでいるため、分子内で端子に接続される原子(図の10番と13番の原子)も
+    <i>x</i>軸方向に並べる必要がある。
+    ただし、データベースからとってきた構造ファイルでは、必ずしも運よくそのような方向に分子が向いているわけではない。
+    <p><img src="norot.svg" height="200" /></p>
+    そのようなわけで、必要なことは元の構造から狙った二つの原子が<i>x</i>軸方向に並ぶように分子を回転させる事である。
+    <p><img src="rot.svg" height="400" /></p>
+
+    <hr />
+    <h2 id="xyz">xyzファイル</h2>
+    メタンの場合のXYZファイルは次のようになっていた。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+5
+CT1001789336
+H          0.00210       -0.00410        0.00200
+C         -0.01270        1.08580        0.00800
+H          1.00990        1.46310        0.00030
+H         -0.53990        1.44690       -0.87510
+H         -0.52290        1.43730        0.90480
+            </code></pre>
+    1行目はこの構造の原子数(今の場合は5個)を表す。
+    2行目は「コメント」であり、機械側では意味を持たない覚書のようなものである。
+    そのあとは各原子について元素記号とデカルト座標(単位Å)が並んでいる。
+    <br />
+    これを何らかのプログラミング言語で読み込んで、原子の座標を配列(ベクトル)として保持する。
+    <hr />
+    <h2 id="python">プログラム言語「python」</h2>
+    pythonのインストールはもしかすると既にされているかもしれないが、このようにする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+sudo apt install python3
+            </code></pre>
+
+    pythonの練習用にノートブック機能を使えるようにする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+sudo -H python3 -m pip install jupyter
+            </code></pre>
+
+    また、行列-ベクトル積やベクトルの内積を行う機能を追加する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+sudo -H python3 -m pip install numpy
+            </code></pre>
+
+    ノートブックはこのようにして開く。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+python3 -m notebook --no-browser
+            </code></pre>
+    URLが3個ほど表示されるので、その中で「http://localhost:8888」から始まるものを適当なブラウザで開く。
+  </body>
+</html>
