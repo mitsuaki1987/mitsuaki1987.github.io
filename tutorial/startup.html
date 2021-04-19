@@ -222,6 +222,27 @@ sudo apt install gnuplot
     例としては、OpenMXによる並列数値計算はログインノードでは行わず、「キューイングシステム」というものを用いて計算ノードで実行する。
     「軽い処理」はグラフのプロットなど。
 
+   <h3>もう一つの計算機クラスター: macloud</h3>
+
+　　上記のgauss系統の他に別の計算機クラスター系統がある。
+    そちらについては下記の通り。
+    <ul>
+      <li>フロントエンドマシン : macloud.issp.u-tokyo.ac.jp
+        <ul>
+          <li>CPU : Intel Xeon E5-2603 v3, 2 CPU (12 cores)</li>
+          <li>RAM : 32 GB</li>
+          <li>Disk : 15 TB</li>
+        </ul>
+      </li>
+      <li>計算ノード : macloud1～macloud8 (8ノード)
+        <ul>
+          <li>CPU : Intel Xeon E5-2670 v3, 2 CPU (24 cores)</li>
+          <li>RAM : 64 GB / node</li>
+          <li>Disk : フロントエンドマシンの/home2/を共有</li>
+        </ul>
+      </li>
+    </ul>
+
     <hr>
 
     <h2 id="workstationlogin">ワークステーションへのログイン</h2>
@@ -230,6 +251,10 @@ sudo apt install gnuplot
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 ssh -Y ユーザー名@gauss.issp.u-tokyo.ac.jp
             </code></pre>
+    macloudを使う場合には次のようにする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ssh -Y ユーザー名@macloud.issp.u-tokyo.ac.jp
+                  </code></pre>
     最初に実行したときのみ
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 The authenticity of host 'gauss.issp.u-tokyo.ac.jp (157.82.227.175)' can't be established.
@@ -250,11 +275,19 @@ Are you sure you want to continue connecting (yes/no)?
     </ul>
     また、/home/public/bin/以下にOpenMX(コマンド名としてはopenmx)などの様々な物性物理計算プログラムが置いてある。
 
+    ワークステーション「macloud」の場合は次の通り。
+    <ul>
+      <li>GNU C/C++/Fortranコンパイラー : こちらはIntelコンパイラーがインストールされていない。</li>
+      <li>LAPACK, BLAS, FFTW3, ScaLAPACK : 固有値計算、高速フーリエ変換などの数値計算ライブラリ</li>
+      <li>SLURM : キューイングシステム、次の節で説明する</li>
+    </ul>
+    また、/home2/public/bin/以下にOpenMX(コマンド名としてはopenmx)などの様々な物性物理計算プログラムが置いてある。
+
     <hr>
 
     <h2 id="queue">キューイングシステムによるジョブ投入</h2>
 
-    gaussには13台の計算ノード(gauss01～gauss13)がつながっている。
+    gaussには13台の計算ノード(gauss01～gauss13)がつながっている(macloudの場合はmacloud1～macloud8の8台)。
     ユーザーは実行したいコマンドをひとまとめにした「指示書」のようなものを作成し、
     これをキューイングシステムを用いて「投入」する。
     この指示書の事を「ジョブスクリプト」という。
@@ -284,7 +317,30 @@ date
       <li>8行目の「pwd」は現在いるディレクトリ名を出力するコマンド</li>
       <li>9行目の「sleep」は指定した秒数(この場合30秒)何もしないで待つコマンド</li>
     </ul>
-    ジョブスクリプトを使って、次のコマンドで「ジョブ」の投入を行う。
+
+    macloudの場合には次のようなジョブスクリプトを作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#SBATCH -N 1
+echo "test job"
+date
+hostname
+pwd
+sleep 30
+date
+　　　</code></pre>
+    これをsample.shというファイル名で保存する。
+    <ul>
+      <li>1行目はこのファイルがBourne Shell(ボーンシェル)形式で書かれている事を宣言している。</li>
+      <li>2行目はこのジョブでは1ノード使って計算することを宣言している。</li>
+      <li>3行目では「test job」という文字を出力する。</li>
+      <li>4,8行目の「date」は現在の日付と時刻を出力するコマンド</li>
+      <li>5行目の「hostname」はホスト名(コンピューターの名前)を出力するコマンド</li>
+      <li>6行目の「pwd」は現在いるディレクトリ名を出力するコマンド</li>
+      <li>7行目の「sleep」は指定した秒数(この場合30秒)何もしないで待つコマンド</li>
+    </ul>
+      
+    ジョブスクリプトを使って、次のコマンドで「ジョブ」の投入を行う(gaussの場合)。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 qsub sample.sh
                </code></pre>
@@ -292,7 +348,7 @@ qsub sample.sh
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 qstat -a
                </code></pre>
-    を実行すると、
+    を実行すると(gaussの場合)、
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 [kawamura@gauss work]$ qstat -a
@@ -317,10 +373,40 @@ Job ID                  Username    Queue    Jobname          SessID  NDS   TSK 
     hostnameコマンドの出力に対応して、gauss01～gauss13までのどれかのホスト名が書かれているはずで、
     それがジョブが実際に走ったホスト名を意味する。
 
+    <h4>macloudの場合</h4>
+
+    ジョブスクリプトを使って、次のコマンドで「ジョブ」の投入を行う。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+sbatch sample.sh
+               </code></pre>
+    ここで続けて
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+squeue
+               </code></pre>
+    を実行すると、
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+[kawamura@macloud ~]$ squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+                64    simple sample.s kawamura  R       0:02      1 macloud1
+               </code></pre>
+    となって、実行されている、もしくは実行待ちのジョブ一覧が表示される。
+    <br />
+    上で書かれているように、異なるジョブが同時に同じノードでは実行されないようになっている。
+    もし、すべての計算ノードがジョブで埋まっているときには、ジョブが終わってノードに空きができるまで待ち状態となる。
+    その場合、上の「ST」(Status)が「R」(Running)ではなく「Q」となる。
+
+    30秒ほど経ったあとにもう一度「squeue」を実行してみると、自分のジョブが消えている(終わっている)事が分かる。
+    また、ジョブを投入したディレクトリに「slurm-番号.out」というファイルが作られている。
+    この「番号」にはジョブの整理番号が入る。上の例では通算64番目のジョブを意味する。
+    「slurm-番号.out」にはコマンドを実行したときの出力(標準出力)が記録されている。
+    hostnameコマンドの出力に対応して、macloud1～macloud8までのどれかのホスト名が書かれているはずで、
+    それがジョブが実際に走ったホスト名を意味する。
+
     <h3>並列実行</h3>
 
     一度に複数のCPUコアを使ってプログラムを実行することが可能である。
-    sample.shを次のように書き換えてみる。
+    sample.shを次のように書き換えてみる(gaussの場合)。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 #!/bin/sh
 #PBS -l nodes=1:ppn=28
@@ -332,11 +418,31 @@ mpiexec -hostfile $PBS_NODEFILE hostname
     プロセス数(これはいくつのCPUコアが使われているか、におおむね対応する)はこの場合1行目で指定されており、
     「ppn=28」がノード当たりのプロセス数(processes per node)が28であることを意味する。
     実際に出力ファイルを見ると、ホスト名が28個出力されている事が分かる。
-
+     
     <br />
     この例では単に同じコマンドが同じように28個同時に実行されただけだが、
     実行時にプロセス間で通信を行い、数値計算を分担して行うのが本来の使い方で、
     そのようなプロセス間の通信を行う方式のひとつが<b>Message Passing Interface(MPI)</b>である。
 
+　　<h4>macloudの場合</h4>
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#SBATCH -N 2
+#SBATCH -n 48
+mpiexec hostname
+                </code></pre>
+   この四行目で「hostname」コマンドを並列実行している。
+   プロセス数(これはいくつのCPUコアが使われているか、におおむね対応する)はこの場合3行目で指定されており、
+   「#SBATCH -n 48」が全プロセス数が48であることを意味する。
+   48プロセスを実行するには、通常は48CPUコア以上必要である。
+   macloud1～macloud8はノード当たり24コアなので、2行目の「#SBATCH -N 2」で2ノード使用している。
+    実際に出力ファイルを見ると、ホスト名が48個出力されている事が分かる。
+
+    <br />
+    この例では単に同じコマンドが同じように28個同時に実行されただけだが、
+    実行時にプロセス間で通信を行い、数値計算を分担して行うのが本来の使い方で、
+    そのようなプロセス間の通信を行う方式のひとつが<b>Message Passing Interface(MPI)</b>である。
+    
   </body>
 </html>
