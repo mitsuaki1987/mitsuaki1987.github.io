@@ -156,18 +156,20 @@ MD.TimeStep                   1.0
 MD.Opt.criterion              0.0003
             </code></pre>
 
-    このファイルをエディターで開いて以下の行を追記しておく。場所はどこでもよい。
+    このファイルをエディターで開いて以下の行を追記しておく(gaussの場合)。場所はどこでもよい。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 data.path /home/public/program/openmx/DFT_DATA19/
                   </code></pre>
-
+    macloudでopenmxを実行する場合には次のようにする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+data.path /home2/public/program/openmx/DFT_DATA19/
+                  </code></pre>
+                    
     入力ファイルのキーワードについては
     <a href="http://www.openmx-square.org/openmx_man3.9jp/node21.html">こちらのマニュアルのページ</a>
     を参照。
 
     <hr />
-
-
 
     <h2 id="scp">リモートとのファイルのやり取り</h2>
 
@@ -175,18 +177,20 @@ data.path /home/public/program/openmx/DFT_DATA19/
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 scp abc.dat ユーザー名@gauss.issp.u-tokyo.ac.jp:~/
                         </code></pre>
-    次にsshでgaussにログインしてlsを実行してみると、このabc.datが送られていることが確認できる。
+    macloudに送る場合は
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+scp abc.dat ユーザー名@gauss.issp.u-tokyo.ac.jp:~/
+                              </code></pre>      
+    次にsshでgauss(macloud)にログインしてlsを実行してみると、このabc.datが送られていることが確認できる。
     <br />
 
-    gauss内に作業用ディレクトリを作ってabc.datをそこに移動し、自分もそのディレクトリに行く。
+    gauss(macloud)内に作業用ディレクトリを作ってabc.datをそこに移動し、自分もそのディレクトリに行く。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 mkdir -p ~/work/methane/
 mv abc.dat ~/work/methane/
 cd ~/work/methane/
                         </code></pre>
     <hr />
-
-
 
     <h2 id="jobsubmit">ジョブ投入</h2>
 
@@ -202,6 +206,18 @@ cd $PBS_O_WORKDIR
 mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx abc.dat -nt $OMP_NUM_THREADS &gt; ${PBS_JOBID}.out 2&gt;&amp;1
                </code></pre>
     これを「qsub dft.sh」で投入する。
+
+　　<h3>macloudの場合</h3>
+    
+<pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/sh
+#SBATCH -N 1
+#SBATCH -n 5
+source ~/.bashrc
+export OMP_NUM_THREADS=1
+mpiexec /home2/public/bin/openmx abc.dat -nt $OMP_NUM_THREADS &gt; ${SLURM_JOB_ID}.out 2&gt;&amp;1
+               </code></pre>
+    これを「sbatch dft.sh」で投入する。
     <hr />
 
     <h2 id="outputfile">OpenMX出力ファイルと可視化</h2>
