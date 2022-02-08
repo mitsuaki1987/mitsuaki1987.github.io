@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[margin=3cm]{geometry}
+\begin{document}
+
+\title{Phonon}
+\author{Mitsuaki Kawamura}
+\maketitle
+
+
+\section{Single harmonic Oscillator}
+
+The hamiltonian operator is
+\begin{align}
+    \hat{H} = \frac{\hat{p}^2}{2 M} + \frac{C \hat{u}^2}{2},
+\end{align}
+where $\hat{u}$ and $\hat{p}$ are the position and the momentum operator.
+These operators satisfies the following commutation relation:
+\begin{align}
+    [\hat{u}, \hat{p}] \equiv \hat{u} \hat{p} - \hat{p} \hat{u} = i
+\end{align}
+Then we introduce the creation- and anihiration- operator ($\hat{b}^\dagger$ and $\hat{b}$)
+as follows
+\begin{align}
+    \hat{u} &\equiv \frac{1}{(4 M C)^{1/4}}(\hat{b} + \hat{b}^\dagger),
+    \\
+    \hat{p} &\equiv \left(\frac{M C}{4}\right)^{1/4}(-i \hat{b} + i \hat{b}^\dagger).
+\end{align}
+The commutation relation of $\hat{b}^\dagger$ and $\hat{b}$
+\begin{align}
+    [\hat{b}, \hat{b}] = 0, [\hat{b}, \hat{b}^\dagger] = 1
+\end{align}
+lead to the orignal commutation relation of $\hat{u}$ and $\hat{p}$ as
+\begin{align}
+    [\hat{u}, \hat{p}] &= \frac{i}{2}(-[\hat{b}, \hat{b}] + [\hat{b}, \hat{b}^\dagger]
+    -[\hat{b}^\dagger, \hat{b}] + [\hat{b}^\dagger, \hat{b}^\dagger])
+    =i,
+\end{align}
+and the hamiltonian becomes
+\begin{align}
+    \hat{H} &= \frac{1}{4}\left( 
+        \frac{(M C)^{1/2}}{M} (-i \hat{b} + i \hat{b}^\dagger)(-i \hat{b} + i \hat{b}^\dagger)
+        + \frac{C}{(M C)^{1/2}}(\hat{b}+\hat{b}^\dagger)(\hat{b}+\hat{b}^\dagger)
+        \right)
+        \nonumber \\
+    &=\frac{1}{2} \left(\frac{C}{M}\right)^{1/2} (\hat{b} \hat{b}^\dagger + \hat{b}^\dagger \hat{b})
+    = \omega \left( \hat{b}^\dagger \hat{b} + \frac{1}{2}\right),
+\end{align}
+where $\omega\equiv(C/M)^{1/2}$
+
+\section{Coupled Harmonic Oscillator}
+
+The hamiltonian operator is
+\begin{align}
+    \hat{H} = \frac{1}{2}\sum_{s}\frac{\hat{p}_s^2}{M_s} + \frac{1}{2}\sum_{s s'} \hat{u}_s  C_{s s'} \hat{u}_{s'},
+\end{align}
+where $\hat{u}_s$ and $\hat{p}_s$ are the position and the momentum operator.
+These operators satisfies the following commutation relation:
+\begin{align}
+    [\hat{u}_s, \hat{p}_{s'}] \equiv i \delta_{s s'}.
+\end{align}
+Then, we introduce the creation- and anihiration- operator ($\hat{b}_\nu^\dagger$ and $\hat{b}_\nu$)
+as follows
+\begin{align}
+    \hat{u}_s &\equiv \sum_{\nu} \frac{v_{s \nu}}{(M_s \omega_\nu)^{1/2}} (\hat{b}_\nu + \hat{b}_\nu^\dagger),
+    \\
+    \hat{p}_s &\equiv \sum_{\nu} (M_s \omega_\nu)^{1/2} v_{s \nu}(-i \hat{b}_\nu + i \hat{b}_\nu^\dagger),
+\end{align}
+where $v_{s \nu}$ and $\omega_\nu^2$ are eigenvectors and eigenvalues of rescaled force constant as
+\begin{align}
+    \sum_{s'} \frac{C_{s s'}}{(M_s M_{s'})^{1/2}} v_{s' \nu} = \omega_\nu^2 v_{s \nu}
+\end{align}
+The commutation relation of $\hat{b}_\nu^\dagger$ and $\hat{b}_\nu$
+\begin{align}
+    [\hat{b}_\nu, \hat{b}_{\nu'}] = 0, [\hat{b}_\nu, \hat{b}_{\nu'}^\dagger] = \delta_{\nu \nu'}
+\end{align}
+lead to the orignal commutation relation of $\hat{u}_s$ and $\hat{p}_s$ as
+\begin{align}
+    [\hat{u}_s, \hat{p}_{s'}] &= \sum_{\nu \nu'} v_{s \nu} v_{s' \nu'}
+    \frac{i}{2}(-[\hat{b}_\nu, \hat{b}_{\nu'}] + [\hat{b}_\nu, \hat{b}_{\nu'}^\dagger]
+    -[\hat{b}_\nu^\dagger, \hat{b}_{\nu'}] + [\hat{b}_\nu^\dagger, \hat{b}_{\nu'}^\dagger])
+    = i \sum_\nu v_{s \nu} v_{s' \nu} = i \delta_{s s'},
+\end{align}
+and the hamiltonian becomes
+\begin{align}
+    \hat{H} &= \frac{1}{2} \sum_{\nu \nu'}
+        (\omega_\nu \omega_{\nu'})^{1/2} 
+        (-i \hat{b}_\nu + i \hat{b}_\nu^\dagger)(-i \hat{b}_{\nu'} + i \hat{b}_{\nu'}^\dagger)
+         \sum_{s}\frac{M_s }{M_s} v_{s \nu} v_{s \nu'}
+         \nonumber \\
+         &+\frac{1}{2} \sum_{\nu \nu'}
+         (\hat{b}_\nu + \hat{b}_\nu^\dagger)(\hat{b}_{\nu'} + \hat{b}_{\nu'}^\dagger)
+         \frac{1}{(\omega_\nu \omega_{\nu'})^{1/2}}
+         \sum_{s s'} v_{s \nu} \frac{C_{s s'}}{(M_s M_{s'})^{1/2}} v_{s' \nu'} 
+         \nonumber \\
+         &= \frac{1}{2} \sum_{\nu \nu'}
+         (\omega_\nu \omega_{\nu'})^{1/2} 
+         (-\hat{b}_\nu\hat{b}_{\nu'} + \hat{b}_\nu\hat{b}_{\nu'}^\dagger + \hat{b}_\nu^\dagger\hat{b}_{\nu'} - \hat{b}_\nu^\dagger\hat{b}_{\nu'}^\dagger)
+          \sum_{s} v_{s \nu} v_{s \nu'}
+          \nonumber \\
+          &+\frac{1}{2} \sum_{\nu \nu'}
+          (\hat{b}_\nu\hat{b}_{\nu'} + \hat{b}_\nu\hat{b}_{\nu'}^\dagger + \hat{b}_\nu^\dagger\hat{b}_{\nu'} + \hat{b}_\nu^\dagger\hat{b}_{\nu'}^\dagger)
+          \frac{\omega_{\nu'}^2}{(\omega_\nu \omega_{\nu'})^{1/2}}
+          \sum_{s } v_{s \nu} v_{s \nu'} 
+          \nonumber \\
+          &=\frac{1}{2} \sum_{\nu} \omega_\nu (\hat{b}_\nu\hat{b}_\nu^\dagger + \hat{b}_\nu^\dagger\hat{b}_\nu)
+          =\sum_{\nu} \omega_\nu \left(\hat{b}_\nu^\dagger\hat{b}_\nu + \frac{1}{2}\right)
+         ,
+\end{align}
+
+\section{Periodic Coupled Harmonic Oscillator}
+
+The hamiltonian operator is
+\begin{align}
+    \hat{H} = \frac{1}{2}\sum_{\textbf{T}s\alpha}\frac{\hat{p}_{\textbf{T}s\alpha}^2}{M_s} 
+    + \frac{1}{2}\sum_{\textbf{T}s\alpha \textbf{T}'s'\alpha'} \hat{u}_{\textbf{T}s\alpha} 
+    C_{\textbf{T}s\alpha \textbf{T}'s'\alpha'} \hat{u}_{\textbf{T}'s'\alpha'},
+\end{align}
+where $\hat{u}_{\textbf{T}s\alpha}$ and $\hat{p}_{\textbf{T}s\alpha}$ are the position and the momentum operator.
+These operators satisfies the following commutation relation:
+\begin{align}
+    [\hat{u}_{\textbf{T}s\alpha}, \hat{p}_{\textbf{T}'s'\alpha'}] \equiv i \delta_{\textbf{T}\textbf{T}'}\delta_{s s'}\delta_{\alpha \alpha'}.
+\end{align}
+The Fourier-transformed operators are defined as follows:
+\begin{align}
+    \hat{U}_{\textbf{q}s\alpha} \equiv \frac{1}{N_C^{1/2}} \sum_{\textbf{T}} \hat{u}_{\textbf{T}s\alpha} e^{i\textbf{q}\cdot\textbf{T}}
+    ,
+    \hat{P}_{\textbf{q}s\alpha} \equiv \frac{1}{N_C^{1/2}} \sum_{\textbf{T}} \hat{p}_{\textbf{T}s\alpha} e^{i\textbf{q}\cdot\textbf{T}}
+    \\
+    \hat{u}_{\textbf{T}s\alpha} = \frac{1}{N_C^{1/2}} \sum_{\textbf{q}} \hat{U}_{\textbf{q}s\alpha} e^{-i\textbf{q}\cdot\textbf{T}}
+    ,
+    \hat{p}_{\textbf{T}s\alpha} = \frac{1}{N_C^{1/2}} \sum_{\textbf{q}} \hat{P}_{\textbf{q}s\alpha} e^{-i\textbf{q}\cdot\textbf{T}},
+\end{align}
+where $N_C$ is the number of cells within the Born–-von Karman boundary condition.
+They also satisfy the commutation relation.
+\begin{align}
+    [\hat{U}_{\textbf{q}s\alpha}, \hat{P}_{\textbf{q}'s'\alpha'}^\dagger] 
+    &= \frac{1}{N_C}\sum_{\textbf{T}\textbf{T}'} e^{i\textbf{q}\cdot\textbf{T}}e^{-i\textbf{q}'\cdot\textbf{T}'}
+    [\hat{u}_{\textbf{T}s\alpha}, \hat{p}_{\textbf{T}'s'\alpha'}]
+    =
+    i \frac{1}{N_C}\sum_{\textbf{T}} e^{i(\textbf{q}-\textbf{q}')\cdot\textbf{T}}
+    \delta_{s s'}\delta_{\alpha \alpha'}
+    \\
+    &=i \delta_{\textbf{q}\textbf{q}'}\delta_{s s'}\delta_{\alpha \alpha'} .
+\end{align}
+The hamiltonian becomes
+\begin{align}
+    \hat{H} &= \frac{1}{2 N_C}\sum_{\textbf{q}\textbf{q}'\textbf{T}s\alpha}
+    \frac{\hat{P}_{\textbf{q}s\alpha}\hat{P}_{\textbf{q}'s\alpha} e^{i(\textbf{q}+\textbf{q}')\cdot\textbf{T}}}{M_s} 
+    + \frac{1}{2 N_C}\sum_{\textbf{q}\textbf{q}'s\alpha s'\alpha'}
+    \hat{U}_{\textbf{q}s\alpha}  \hat{U}_{\textbf{q}'s'\alpha'}
+    \sum_{\textbf{T} \textbf{T}'}
+    C_{\textbf{T}s\alpha \textbf{T}'s'\alpha'}
+    e^{i\textbf{q}\cdot\textbf{T}}e^{i\textbf{q}'\cdot\textbf{T}'}
+    \nonumber \\
+    &=
+    \frac{1}{2}\sum_{\textbf{q}\textbf{q}'\textbf{T}s\alpha}
+    \frac{\hat{P}_{\textbf{q}s\alpha}^\dagger \hat{P}_{\textbf{q}s\alpha}}{M_s} 
+    + \frac{1}{2 N_C}\sum_{\textbf{q}\textbf{q}'s\alpha s'\alpha'}
+    \hat{U}_{\textbf{q}s\alpha}  \hat{U}_{\textbf{q}'s'\alpha'}
+    \sum_{\textbf{T} \textbf{T}'}
+    C_{\textbf{0}s\alpha (\textbf{T}'-\textbf{T})s'\alpha'}
+    e^{i\textbf{q}'\cdot(\textbf{T}'-\textbf{T})}e^{i(\textbf{q}+\textbf{q}')\cdot\textbf{T}}
+    \nonumber \\
+    &=
+    \sum_{\textbf{q}} \left(
+    \frac{1}{2}\sum_{s\alpha}
+    \frac{\hat{P}_{\textbf{q}s\alpha}^\dagger \hat{P}_{\textbf{q}s\alpha}}{M_s} 
+    + \frac{1}{2}\sum_{s\alpha s'\alpha'}
+    \hat{U}_{\textbf{q}s\alpha}^\dagger \tilde{C}_{\textbf{q}s\alpha s'\alpha'} \hat{U}_{\textbf{q}s'\alpha'}
+    \right),
+\end{align}
+where
+\begin{align}
+    \tilde{C}_{\textbf{q}s\alpha s'\alpha'} \equiv
+    \sum_{\textbf{T}}
+    C_{\textbf{0}s\alpha \textbf{T}s'\alpha'}
+    e^{i\textbf{q}\cdot\textbf{T}}
+\end{align}
+With the same discussion in the previous section, we obtain the following results:
+\begin{align}
+    \hat{U}_{\textbf{q}s\alpha} &\equiv \sum_{\nu} \frac{v_{s\alpha \textbf{q}\nu}}{(M_s \omega_{\textbf{q}\nu})^{1/2}} 
+    (\hat{b}_{\textbf{q}\nu} + \hat{b}_{\textbf{q}\nu}^\dagger),
+    \\
+    \hat{P}_{\textbf{q}s\alpha} &\equiv \sum_{\nu} (M_s \omega_{\textbf{q}\nu})^{1/2} v_{s\alpha \textbf{q}\nu}
+    (-i \hat{b}_{\textbf{q}\nu} + i \hat{b}_{\textbf{q}\nu}^\dagger),
+    \\
+    \sum_{s'\alpha'} \frac{\tilde{C}_{\textbf{q}s\alpha s'\alpha'}}{(M_s M_{s'})^{1/2}} v_{s'\alpha' \textbf{q}\nu} 
+    &= \omega_{\textbf{q}\nu}^2 v_{s\alpha \textbf{q}\nu}
+    \label{eigen}
+    \\
+    \hat{H} &=\sum_{{\textbf{q}\nu}} \omega_{\textbf{q}\nu} \left(\hat{b}_{\textbf{q}\nu}^\dagger\hat{b}_{\textbf{q}\nu} + \frac{1}{2}\right)
+    \\
+    [\hat{U}_{\textbf{q}s\alpha}, \hat{P}_{\textbf{q}'s'\alpha'}^\dagger] 
+    &= \sum_{\nu \nu'} v_{s \alpha \textbf{q} \nu} v_{s' \alpha' \textbf{q}' \nu'}^*
+    \frac{i}{2}(-[\hat{b}_{\textbf{q} \nu}, \hat{b}_{\textbf{q}' \nu'}] + [\hat{b}_{\textbf{q} \nu}, \hat{b}_{\textbf{q}' \nu'}^\dagger]
+    -[\hat{b}_{\textbf{q} \nu}^\dagger, \hat{b}_{\textbf{q}' \nu'}] + [\hat{b}_{\textbf{q} \nu}^\dagger, \hat{b}_{\textbf{q}' \nu'}^\dagger])
+    \nonumber \\
+    &= i \delta_{\textbf{q}\textbf{q}'} \sum_\nu v_{s \alpha \textbf{q} \nu} v_{s' \alpha' \textbf{q}' \nu}^* 
+    = i \delta_{\textbf{q}\textbf{q}'} \delta_{s s'}\delta_{\alpha \alpha'},
+\end{align}
+
+\end{document}
