@@ -69,14 +69,18 @@
       WindowsにもコマンドプロンプトやPowershellといったCUIが備わっているが、使われているコマンドなど(Windowsではコマンドレットと呼ばれる)がLinuxのものと大きく異なるので、
       それとは違う別の仕組みを用いる。
       それは<b>Windows Subsystem Linux (WSL)</b>というもので、Windows10の途中から導入された。
-      WSLにはWSL1とWSL2があるが、2021/2現在の私の主観ではWSL1の方が使い勝手が良いと思う。
-      スペックの低いPCでWSL2を使ったときに、動作がもっさりするという事例があった。
-      Windows10の最近のバージョンではWSL2がデフォルトになっているので、<b>でデフォルトをWSL1に変える操作を途中で行う</b>。
+      WSLにはWSL1とWSL2があるが、2022/2現在の私はWSL1を使っている
+      (<a href="https://docs.microsoft.com/ja-jp/windows/wsl/compare-versions" target="_blank">参考</a>)。
+      4GB RAMのPCでWSL2を使ったときに、動作がもっさりするという事例があった。
       ただし、既にWSL2を使って慣れている場合にはあえて変える必要はない。
       WSL1⇔WSL2の変更はインストール後でもいつでも簡単にできる。
     </p>
-    <p>
-      WSLのインストールにはこの記事が参考になる。
+
+    <h4>WSL1の場合</h4>
+    
+    2022/2のWindows10の最近のバージョンではWSL2がデフォルトになっているので、<b>デフォルトをWSL1に変える操作を途中で行う</b>。
+    また現時点ではWSLでGoogle検索するとたいていWSL2の情報がヒットする。
+    WSL1の情報として参考になるサイト
     </p>
     <a href="https://qiita.com/yoshige/items/dbc85b048fba51e597ee" target="_blank">初心者のためのWSL( 1 ) ~初期設定,CUI設定編~</a>
     <br>
@@ -109,20 +113,29 @@ Aborted (core dumped)
         <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 alias inkscape="_INKSCAPE_GC=disable inkscape"
         </code></pre>
-        を追記する。
         ウェブブラウザー「w3m」などのプログラムでもこのエラーが起こるようだが、こちらの解決策は調べていない。
+        を追記する。Ubuntu18.04だとこの問題は起きないが、いろいろな理由で20.04が使いたいので現状(2022/2)私は20.04を使っている。
         <br>
         参考:
         <a href="https://gitlab.com/inkscape/inkscape/-/issues/1420" target="_blank">Inkscape Ubuntu WSL error - Wrong __data_start/_end pair</a>
       </li>
     </ul>
+
+    <h4>WSL2を使う場合</h4>
+    参考になるサイト
+    <ul>
+      <li><a href="https://docs.microsoft.com/ja-jp/windows/wsl/install" target="_blank">Microsoftのサイト</a></li>
+      <li><a href="https://tamnology.com/wsl2-vcxsrv/" target="_blank">【WSL2】VcXsrvでUbuntu GUIアプリケーションを実行する【Xサーバー】</a>
+      ※VcXsrvの設定がWSL1と異なるので気を付ける。</li>
+      <li><a href="https://qiita.com/Uchitaso/items/6e0a7859e87bb8bdb527" target="_blank">wsl2でよく使う、windowsとlinux間のファイル移動やコマンド実行。</a></li>
+    </ul>
+    
     ちなみにこの「Ubuntu」はLinuxの「ディストリビューション」のひとつで、
     ディストリビューションはLinuxのメインとなる「カーネル」に何を付加していくかで個性が分かれるもので、
     好みや役割に応じて選択してインストールする。
     Ubuntuのほかに「CentOS」や「Slackware」などたくさんある。
     我々の用いるワークステーションgaussにはCentOSが入っているが、
     その辺りの違いはそれほど気にならない。
-    <br>
 
     <h3>Linuxの操作に慣れる</h3>
 
@@ -130,6 +143,9 @@ alias inkscape="_INKSCAPE_GC=disable inkscape"
     <br />
     <a href="linux.html">Linux覚書</a>
     <br />
+    <b>コマンド操作で重要なのは「タブ補間」と「履歴呼び出し」である。</b>
+    これらを使う癖をつけると入力ミスが減ったり作業時間を短くできたりする。
+    <br>
     コマンドやファイル名の入力や途中でTabキーを押すと、自動的に残りの文字が補完される。
     例として、「ifc」と打ってTabキーを押すと自動的に補完されて「ifconfig」となる。
     補完候補が複数ある時には何も出てこないが、その場合はもう一度Tabキーを押すと候補一覧が表示される。例えば、
@@ -138,6 +154,9 @@ kawamura@kawamura:~$ set[ここでTabを2回押す]
 set           setcap        setfont       setleds       setmetamode   setsid        setupcon      setvtrgb
 setarch       setfacl       setkeycodes   setlogcons    setpci        setterm       setvesablank  setxkbmap
                </code></pre>
+    <br>
+    コマンド入力時に「↑」カーソルキーを押すと順次過去に入力した内容が呼び出される。
+    戻り過ぎた場合は「↓」キーを押す。
 
     <h3>SSH鍵ペアの作成</h3>
 
@@ -233,9 +252,9 @@ sudo apt install gnuplot
     例としては、OpenMXによる並列数値計算はログインノードでは行わず、「キューイングシステム」というものを用いて計算ノードで実行する。
     「軽い処理」はグラフのプロットなど。
 
-   <h3>もう一つの計算機クラスター: macloud</h3>
+    <h3>もう一つの計算機クラスター: macloud</h3>
 
-　　上記のgauss系統の他に別の計算機クラスター系統がある。
+    上記のgauss系統の他に別の計算機クラスター系統がある。
     そちらについては下記の通り。
     <ul>
       <li>フロントエンドマシン : macloud.issp.u-tokyo.ac.jp
@@ -339,7 +358,7 @@ hostname
 pwd
 sleep 30
 date
-　　　</code></pre>
+    </code></pre>
     これをsample.shというファイル名で保存する。
     <ul>
       <li>1行目はこのファイルがBourne Shell(ボーンシェル)形式で書かれている事を宣言している。</li>
@@ -435,7 +454,7 @@ mpiexec -hostfile $PBS_NODEFILE hostname
     実行時にプロセス間で通信を行い、数値計算を分担して行うのが本来の使い方で、
     そのようなプロセス間の通信を行う方式のひとつが<b>Message Passing Interface(MPI)</b>である。
 
-　　<h4>macloudの場合</h4>
+    <h4>macloudの場合</h4>
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 #!/bin/sh
@@ -446,8 +465,8 @@ mpiexec hostname
    この四行目で「hostname」コマンドを並列実行している。
    プロセス数(これはいくつのCPUコアが使われているか、におおむね対応する)はこの場合3行目で指定されており、
    「#SBATCH -n 48」が全プロセス数が48であることを意味する。
-   48プロセスを実行するには、通常は48CPUコア以上必要である。
-   macloud1～macloud8はノード当たり24コアなので、2行目の「#SBATCH -N 2」で2ノード使用している。
+    48プロセスを実行するには、通常は48CPUコア以上必要である。
+    macloud1～macloud8はノード当たり24コアなので、2行目の「#SBATCH -N 2」で2ノード使用している。
     実際に出力ファイルを見ると、ホスト名が48個出力されている事が分かる。
 
     <br />

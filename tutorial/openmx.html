@@ -207,16 +207,16 @@ mpiexec -hostfile $PBS_NODEFILE /home/public/bin/openmx abc.dat -nt $OMP_NUM_THR
                </code></pre>
     これを「qsub dft.sh」で投入する。
 
-　　<h3>macloudの場合</h3>
+    <h3>macloudの場合</h3>
     
-<pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 #!/bin/sh
 #SBATCH -N 1
 #SBATCH -n 5
 source ~/.bashrc
 export OMP_NUM_THREADS=1
 mpiexec /home2/public/bin/openmx abc.dat -nt $OMP_NUM_THREADS &gt; ${SLURM_JOB_ID}.out 2&gt;&amp;1
-               </code></pre>
+    </code></pre>
     これを「sbatch dft.sh」で投入する。
     <hr />
 
@@ -227,14 +227,14 @@ mpiexec /home2/public/bin/openmx abc.dat -nt $OMP_NUM_THREADS &gt; ${SLURM_JOB_I
 [kawamura@gauss met]$ ls
 15761.gauss.out  abc.dat   abc.dden.cube  abc.md   abc.out        abc.v0.cube     abc.xyz  dft.sh         dft.sh.o15761
 abc.cif          abc.dat#  abc.ene        abc.md2  abc.tden.cube  abc.vhart.cube  abc_rst  dft.sh.e15761
-                     </code></pre>
+    </code></pre>
     「15761.gauss.out」や「abc.out」をlessコマンド表示させて、それぞれの項目の意味するところを考える。
 
     <br />
     PCのほうに戻って、計算結果のcubeファイルをscpでgaussから回収する。
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 scp ユーザー名@gauss.issp.u-tokyo.ac.jp:~/work/methane/*.cube .
-            </code></pre>
+    </code></pre>
     これは.cubeで終わるファイルをまとめて持ってくるコマンド。
 
   </body>
