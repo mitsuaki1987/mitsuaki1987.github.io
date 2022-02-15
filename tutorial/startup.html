@@ -96,13 +96,24 @@ wsl --set-default-version 1
         上の一つ目のリンクで、「2.インストール」の中で、Microsoft Storeから「Ubuntu」を選んでインストールするとある。
         Storeで「Ubuntu」で検索すると「Ubuntu」、「Ubuntu 20.04 LTS」、「Ubuntu 18.04 LTS」の3つが出てくるが、この中で最初の二つは同じものであり、
         どちらもバージョン20.04がインストールされる。
-        ところが、WSL1とUbuntu20.04の組み合わせで不具合が生じるという報告があった。
-        <br />
-        <a href="https://qiita.com/AumyF/items/eaf42dd3345a2285ff9e">(今はまだ)WSL1にUbuntu 20.04を入れるな</a>
-        <br />
-        今は既にパッチが充てられて、直っている場合が多いと思うが、PCの構成によってはアップデートが来る時間差が生じるので、
-        <b>18.04をインストールした方が無難である</b>。
-        できることは20.04でも18.04でもほぼ変わらない(セキュリティパッチなども同様)。
+      </li>
+      <li>
+        Ubuntu20.04+WSL1の組み合わせで「Inkscape」というプログラムを使った場合に起こる問題と解決策をメモしておく。
+        この状況でinkscapeを実行すると
+        <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+Wrong __data_start/_end pair
+Aborted (core dumped)
+        </code></pre>
+        と出て起動しない。調べるとガベージコレクションに関するライブラリに問題があるらしい。
+        解決策は.bashrcに
+        <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+alias inkscape="_INKSCAPE_GC=disable inkscape"
+        </code></pre>
+        を追記する。
+        ウェブブラウザー「w3m」などのプログラムでもこのエラーが起こるようだが、こちらの解決策は調べていない。
+        <br>
+        参考:
+        <a href="https://gitlab.com/inkscape/inkscape/-/issues/1420" target="_blank">Inkscape Ubuntu WSL error - Wrong __data_start/_end pair</a>
       </li>
     </ul>
     ちなみにこの「Ubuntu」はLinuxの「ディストリビューション」のひとつで、
