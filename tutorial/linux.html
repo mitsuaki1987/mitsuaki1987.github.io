@@ -340,9 +340,9 @@ nano
     なにも付けずにこのコマンドを実行すると空のファイル(保存前)が開かれる。
     既存のファイルを開くときには
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
-nano abc.txt
+nano -m abc.txt
     </code></pre>
-    とすると、このような画面になる。
+    とすると、このような画面になる。「-m」のオプションをつけるとマウスが使えるようになる。
 
 <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 GNU nano 2.9.3                                                                             abc.txt
@@ -356,6 +356,7 @@ abcdf 3 20
 ^X Exit          ^R Read File     ^\ Replace       ^U Uncut Text    ^T To Spell      ^_ Go To Line    M-E Redo         M-6 Copy Text    M-W WhereIs Next ^F Forward       ^Right Next Word
                 </code></pre>
     画面下部に出ているのはショートカットキー一覧であり、ファイルの保存等の操作をこれを用いて行う。
+    上で「-m」のオプションをつけて起動した場合にはこれらの文字の部分をクリックすることでも操作ができる。
     例えば「^X Exit」はCtrlキーを押しながら「x」を押すとnanoが終了する事を意味する。終了する際ファイルを保存するか聞かれる場合もある。
     「M-U Undo」はAltキーを押しながら「u」を押すとアンドゥ、すなわち直前の入力を取り消して元に戻す操作が行われる事を意味する。
     <br />
