@@ -130,6 +130,7 @@ The Fourier-transformed operators are defined as follows:
     \hat{u}_{\textbf{T}s\alpha} = \frac{1}{N_C^{1/2}} \sum_{\textbf{q}} \hat{U}_{\textbf{q}s\alpha} e^{-i\textbf{q}\cdot\textbf{T}}
     ,
     \hat{p}_{\textbf{T}s\alpha} = \frac{1}{N_C^{1/2}} \sum_{\textbf{q}} \hat{P}_{\textbf{q}s\alpha} e^{-i\textbf{q}\cdot\textbf{T}},
+    \label{eq_ftup}
 \end{align}
 where $N_C$ is the number of cells within the Born–-von Karman boundary condition.
 They also satisfy the commutation relation.
@@ -181,6 +182,7 @@ With the same discussion in the previous section, we obtain the following result
 \begin{align}
     \hat{U}_{\textbf{q}s\alpha} &\equiv \sum_{\nu} \frac{v_{s\alpha \textbf{q}\nu}}{(M_s \omega_{\textbf{q}\nu})^{1/2}} 
     (\hat{b}_{\textbf{q}\nu} + \hat{b}_{\textbf{q}\nu}^\dagger),
+    \label{eq_ub}
     \\
     \hat{P}_{\textbf{q}s\alpha} &\equiv \sum_{\nu} (M_s \omega_{\textbf{q}\nu})^{1/2} v_{s\alpha \textbf{q}\nu}
     (-i \hat{b}_{\textbf{q}\nu} + i \hat{b}_{\textbf{q}\nu}^\dagger),
@@ -200,4 +202,92 @@ With the same discussion in the previous section, we obtain the following result
     = i \delta_{\textbf{q}\textbf{q}'} \delta_{s s'}\delta_{\alpha \alpha'},
 \end{align}
 
+\section{Electron-phonon vertex}
+
+Electron-nuclear Hamiltonian in 2nd quantization representation
+
+\begin{align}
+    \hat{H}_{en} = \sum_{\sigma} \int d^3 r \hat{\psi}_{\sigma}(\textbf{r})^\dagger 
+    \hat{\psi}_{\sigma}(\textbf{r}) V(\textbf{r};\{\hat{R}_{\textbf{T}s\alpha}\}),
+\end{align}
+where $\hat{R}_{\textbf{T}s\alpha}$ is the position operator of nuclear as
+\begin{align}
+    \hat{R}_{\textbf{T}s\alpha} = R^0_{\textbf{T}s\alpha} + \hat{u}_{\textbf{T}s\alpha},
+\end{align}
+$R^0_{\textbf{T}s\alpha}$ is equiribrium position.
+
+We expand $V(\textbf{r};\{\hat{R}_{\textbf{T}s\alpha}\})$ arround $R^0_{\textbf{T}s\alpha}$
+and obtain
+\begin{align}
+    \hat{H}_{en} = \sum_{\sigma} \int d^3 r \hat{\psi}_{\sigma}(\textbf{r})^\dagger 
+    \hat{\psi}_{\sigma}(\textbf{r}) V(\textbf{r};\{R^0_{\textbf{T}s\alpha}\})
+    +
+    \sum_{\sigma} \int d^3 r \hat{\psi}_{\sigma}(\textbf{r})^\dagger 
+    \hat{\psi}_{\sigma}(\textbf{r}) \sum_{\textbf{T}s\alpha} 
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}
+    \hat{u}_{\textbf{T}s\alpha}.
+\end{align}
+The first term is the electron-fixed nuclear interaction term, and the second term is the electron-phonon interaction term $\hat{H}_{ep}$.
+By expanding $\hat{\psi}_{\sigma}$ with Bloch orbitals $\varphi_{n\textbf{k}}$
+\begin{align}
+    \hat{\psi}_{\sigma}(\textbf{r}) = \sum{n\textbf{k}}\varphi_{n\textbf{k}}(\textbf{r})
+    \hat{c}_{n\textbf{k}\sigma},
+\end{align}
+we obtain
+\begin{align}
+    \hat{H}_{ep} = \sum_{\sigma n n' \textbf{k} \textbf{k}' \textbf{T}s\alpha}
+    \hat{c}_{n\textbf{k}\sigma}^\dagger \hat{c}_{n'\textbf{k}'\sigma}
+    \hat{u}_{\textbf{T}s\alpha}
+    \int d^3 r \varphi_{n\textbf{k}}^*(\textbf{r})\varphi_{n'\textbf{k}'}(\textbf{r})
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}.
+\end{align}
+By using Eqs (\ref{eq_ftup}, \ref{eq_ub}) and 
+$\varphi_{n\textbf{k}}(\textbf{r}) \equiv N^{-1/2}_C e^{i \textbf{k} \cdot \textbf{r}} 
+\chi_{n\textbf{k}}(\textbf{r})$, we obtain
+\begin{align}
+    \hat{H}_{ep} = \sum_{\sigma n n' \textbf{k} \textbf{k}' \textbf{q} \nu}
+    \hat{c}_{n\textbf{k}\sigma}^\dagger \hat{c}_{n'\textbf{k}'\sigma}
+    (\hat{b}_{\textbf{q}\nu} + \hat{b}_{\textbf{q}\nu}^\dagger)
+    g_{n\textbf{k} n'\textbf{k}'}^{\textbf{q}\nu},
+\end{align}
+where $g_{n\textbf{k} n'\textbf{k}'}^{\textbf{q}\nu}$ is the electron-phonon vertex as
+\begin{align}
+    g_{n\textbf{k} n'\textbf{k}'}^{\textbf{q}\nu} &\equiv
+    \sum_{\textbf{T}s\alpha}
+    e^{-i\textbf{q}\cdot\textbf{T}} 
+    \frac{v_{s\alpha \textbf{q}\nu}}{(N_C^3 M_s \omega_{\textbf{q}\nu})^{1/2}} 
+    \int d^3 r e^{i(\textbf{k}'-\textbf{k}) \cdot \textbf{r}}
+    \chi_{n\textbf{k}}^*(\textbf{r})\chi_{n'\textbf{k}'}(\textbf{r})
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}
+    \nonumber \\
+    &= 
+    \sum_{\textbf{T} \textbf{T}'s\alpha}
+    e^{-i\textbf{q}\cdot\textbf{T}} 
+    \frac{v_{s\alpha \textbf{q}\nu}}{(N_C^3 M_s \omega_{\textbf{q}\nu})^{1/2}} 
+    \int_{\textrm{cell}} d^3 r
+    e^{i(\textbf{k}'-\textbf{k}) \cdot (\textbf{r}+\textbf{T}')}
+    \chi_{n\textbf{k}}^*(\textbf{r})\chi_{n'\textbf{k}'}(\textbf{r})
+    \frac{\partial V(\textbf{r}+\textbf{T}';\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}
+    \nonumber \\
+    &= 
+    \sum_{\textbf{T}}
+    e^{i(\textbf{k}'-\textbf{k}-\textbf{q})\cdot\textbf{T}} 
+    \sum_{\textbf{T}'s\alpha}
+    \frac{v_{s\alpha \textbf{q}\nu}}{(N_C^3 M_s \omega_{\textbf{q}\nu})^{1/2}} 
+    \int_{\textrm{cell}} d^3 r
+    e^{i(\textbf{k}'-\textbf{k}) \cdot (\textbf{r}+\textbf{T}'-\textbf{T})}
+    \chi_{n\textbf{k}}^*(\textbf{r})\chi_{n'\textbf{k}'}(\textbf{r})
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{(\textbf{T}-\textbf{T}')s\alpha}}
+    \nonumber \\
+    &= 
+    \delta_{\textbf{k}',\textbf{k}+\textbf{q}}
+    \sum_{s\alpha}
+    \frac{v_{s\alpha \textbf{q}\nu}}{(N_C M_s \omega_{\textbf{q}\nu})^{1/2}} 
+    \int_{\textrm{cell}} d^3 r
+    e^{i \textbf{q} \cdot \textbf{r}}
+    \chi_{n\textbf{k}}^*(\textbf{r})\chi_{n'\textbf{k}+\textbf{q}}(\textbf{r})
+    \sum_{\textbf{T}}e^{-i \textbf{q} \cdot \textbf{T}}
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}.
+\end{align}
+If we use $V_{\textrm{KS}}$ alternative to $V$, we obtain the screened electron-phonon vertex.
 \end{document}
