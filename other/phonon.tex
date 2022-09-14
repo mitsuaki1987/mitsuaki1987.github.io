@@ -284,10 +284,174 @@ where $g_{n\textbf{k} n'\textbf{k}'}^{\textbf{q}\nu}$ is the electron-phonon ver
     \sum_{s\alpha}
     \frac{v_{s\alpha \textbf{q}\nu}}{(N_C M_s \omega_{\textbf{q}\nu})^{1/2}} 
     \int_{\textrm{cell}} d^3 r
-    e^{i \textbf{q} \cdot \textbf{r}}
     \chi_{n\textbf{k}}^*(\textbf{r})\chi_{n'\textbf{k}+\textbf{q}}(\textbf{r})
-    \sum_{\textbf{T}}e^{-i \textbf{q} \cdot \textbf{T}}
+    \sum_{\textbf{T}}e^{i \textbf{q} \cdot (\textbf{r}-\textbf{T})}
     \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}.
 \end{align}
 If we use $V_{\textrm{KS}}$ alternative to $V$, we obtain the screened electron-phonon vertex.
+The screened deformation potential $\sum_{\textbf{T}}e^{i \textbf{q} \cdot (\textbf{r}-\textbf{T})} \partial V_\textrm{KS}(\textbf{r};\{R^0\})/\partial R^0_{\textbf{T}s\alpha}$ is obtained as a biproduct of DFPT calculation.
+
+This deformation potential has lattice periodicity as
+\begin{align}
+    \sum_{\textbf{T}}e^{i \textbf{q} \cdot (\textbf{r}+\textbf{T}'-\textbf{T})}
+    \frac{\partial V(\textbf{r}+\textbf{T}';\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}
+    =
+    \sum_{\textbf{T}}e^{i \textbf{q} \cdot (\textbf{r}-\textbf{T})}
+    \frac{\partial V(\textbf{r};\{R^0\})}{\partial R^0_{\textbf{T}s\alpha}}
+\end{align}
+
+\section{Density functional perturbation theory for lattice}
+
+Force constant
+\begin{align}
+    C_{\textbf{T}s\alpha \textbf{T}'s'\alpha'} &\equiv 
+    \frac{\partial^2 E}{\partial R^0_{\textbf{T}s\alpha} \partial R^0_{\textbf{T}'s'\alpha'}}
+    = - \frac{\partial F_{\textbf{T}s\alpha}}{\partial R^0_{\textbf{T}'s'\alpha'}}
+    = \frac{\partial}{\partial R^0_{\textbf{T}'s'\alpha'}}
+    \left(-F_{\textbf{T}s\alpha}^\textrm{C} + \int d^3r \rho(\textbf{r}) 
+    \frac{\partial V(\textbf{r}; \{R^0\}) }{\partial R^0_{\textbf{T}s\alpha}}\right)
+    \nonumber \\
+    &= 
+    \frac{\partial^2 E_\textrm{C}}{\partial R^0_{\textbf{T}s\alpha} \partial R^0_{\textbf{T}'s'\alpha'}}
+    +\int d^3r \rho(\textbf{r}) 
+    \frac{\partial^2 V(\textbf{r}; \{R^0\}) }{\partial R^0_{\textbf{T}s\alpha} \partial R^0_{\textbf{T}'s'\alpha'}}
+    +\int d^3r \frac{\partial \rho(\textbf{r})}{\partial R^0_{\textbf{T}'s'\alpha'}}
+    \frac{\partial V(\textbf{r}; \{R^0\}) }{\partial R^0_{\textbf{T}s\alpha}}
+\end{align}
+Dynamical materix
+\begin{align}
+    \tilde{C}_{\textbf{q}s\alpha s'\alpha'} &\equiv
+    \sum_{\textbf{T}}
+    C_{\textbf{0}s\alpha \textbf{T}s'\alpha'}
+    e^{i\textbf{q}\cdot\textbf{T}}
+    \nonumber \\
+    &=\sum_{\textbf{T}}
+    e^{i\textbf{q}\cdot\textbf{T}}\left(
+    \frac{\partial^2 E_\textrm{C}}{\partial R^0_{\textbf{}s\alpha} \partial R^0_{\textbf{T}'s'\alpha'}}
+    +\int d^3r \rho(\textbf{r}) 
+    \frac{\partial^2 V(\textbf{r}; \{R^0\}) }{\partial R^0_{\textbf{0}s\alpha} \partial R^0_{\textbf{T}s'\alpha'}}
+    \right)
+    +
+    \int d^3r 
+    \frac{\partial V(\textbf{r}; \{R^0\}) }{\partial R^0_{\textbf{0}s\alpha}}
+    \sum_{\textbf{T}}
+    e^{i\textbf{q}\cdot\textbf{T}}\frac{\partial \rho(\textbf{r})}{\partial R^0_{\textbf{T}s'\alpha'}}
+\end{align}
+Monochromatic perturbation
+\begin{align}
+    \sum_{\textbf{T}}
+    e^{i\textbf{q}\cdot\textbf{T}}\frac{\partial \rho(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    2 \sum_{\textbf{T}n\textbf{k}}e^{i\textbf{q}\cdot\textbf{T}} 
+    \left( 
+        \frac{\partial \varphi_{n\textbf{k}}^*(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\varphi_{n\textbf{k}}(\textbf{r})
+       +\varphi_{n\textbf{k}}^*(\textbf{r})\frac{\partial \varphi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    \right)
+    \nonumber \\
+    &=
+    2 \sum_{\textbf{T}n\textbf{k}}e^{i\textbf{q}\cdot\textbf{T}} 
+    \left( 
+        \frac{\partial \chi_{n\textbf{k}}^*(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\chi_{n\textbf{k}}(\textbf{r})
+       +\chi_{n\textbf{k}}^*(\textbf{r})\frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    \right)
+    \nonumber \\
+    &=
+    2 e^{i\textbf{q}\cdot\textbf{r}}\sum_{\textbf{T}n\textbf{k}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \left( 
+        \frac{\partial \chi_{n\textbf{k}}^*(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\chi_{n\textbf{k}}(\textbf{r})
+       +\chi_{n\textbf{k}}^*(\textbf{r})\frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    \right)
+\end{align}
+
+\begin{align}
+    \left(-\frac{\nabla^2}{2}+V_\textrm{KS}(\textbf{r}) - \varepsilon_{n\textbf{k}} \right)
+    \frac{\partial \varphi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \left(\frac{\partial \varepsilon_{n\textbf{k}}}{\partial R^0_{\textbf{T}s\alpha}}
+    -\frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\right)
+    \varphi_{n\textbf{k}}(\textbf{r})
+    \nonumber \\
+    \left(-\frac{(i\textbf{k}+\nabla)^2}{2}+V_\textrm{KS}(\textbf{r}) - \varepsilon_{n\textbf{k}} \right)
+    \frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \left(\frac{\partial \varepsilon_{n\textbf{k}}}{\partial R^0_{\textbf{0}s\alpha}}
+    -\frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\right)
+    \chi_{n\textbf{k}}(\textbf{r})
+    \nonumber \\
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \left(-\frac{(i\textbf{k}+\nabla)^2}{2}+V_\textrm{KS}(\textbf{r}) - \varepsilon_{n\textbf{k}} \right)
+    \frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \left(\frac{\partial \varepsilon_{n\textbf{k}}}{\partial R^0_{\textbf{0}s\alpha}}
+    -\frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\right)
+    \chi_{n\textbf{k}}(\textbf{r})
+    \nonumber \\
+    \left(-\frac{(i\textbf{k}+i\textbf{q}+\nabla)^2}{2}+V_\textrm{KS}(\textbf{r}) - \varepsilon_{n\textbf{k}} \right)
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \left(N_C \delta_{\textbf{q}\textbf{0}}\frac{\partial \varepsilon_{n\textbf{k}}}{\partial R^0_{\textbf{0}s\alpha}}
+    -\sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}\right)
+    \chi_{n\textbf{k}}(\textbf{r}).
+\end{align}
+Each component has lattice periodicity
+\begin{align}
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r}-\textbf{T}')} 
+    \frac{\partial \chi_{n\textbf{k}}(\textbf{r}+\textbf{T}')}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial \chi_{n\textbf{k}}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    \\
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r}-\textbf{T}')} 
+    \frac{\partial V_\textrm{KS}(\textbf{r}+\textbf{T}')}{\partial R^0_{\textbf{T}s\alpha}}
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+\end{align}
+Deformation potential is computed as follows:
+\begin{align}
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial V_\textrm{KS}(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}   
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \left\{
+    \frac{\partial V(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    +
+    \int d^3r'
+    \left(
+    \frac{\delta V_\textrm{H}(\textbf{r})}{\delta \rho(\textbf{r}')}
+    +\frac{\delta V_{XC}(\textbf{r})}{\delta \rho(\textbf{r}')}
+    \right)
+    \frac{\partial \rho(\textbf{r}')}{\partial R^0_{\textbf{T}s\alpha}}
+    \right\}
+    \nonumber \\
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \left\{
+    \frac{\partial V(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    +
+    \int d^3r'
+    \left(
+    \frac{1}{|\textbf{r}-\textbf{r}'|}
+    + f_{XC}(\textbf{r}, \textbf{r}')
+    \right)
+    \frac{\partial \rho(\textbf{r}')}{\partial R^0_{\textbf{T}s\alpha}}
+    \right\}
+    \nonumber \\
+    &=
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r})} 
+    \frac{\partial V(\textbf{r})}{\partial R^0_{\textbf{T}s\alpha}}
+    +
+    \int d^3r'
+    e^{i\textbf{q}\cdot(\textbf{r}'-\textbf{r})} 
+    \left(
+    \frac{1}{|\textbf{r}-\textbf{r}'|}
+    + f_{XC}(\textbf{r}, \textbf{r}')
+    \right)
+    \sum_{\textbf{T}}e^{i\textbf{q}\cdot(\textbf{T}-\textbf{r}')} 
+    \frac{\partial \rho(\textbf{r}')}{\partial R^0_{\textbf{T}s\alpha}}
+\end{align}
+
 \end{document}
