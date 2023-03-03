@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>河村光晶HomePage</title>
+    
+    <meta name="description" content="河村光晶HomePage">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+
+    <h1>
+      Quantum ESPRESSOのビルド
+    </h1>
+    
+    <h2>Wisteria Odyssey</h2>
+
+
+    <ul>
+      <li>2023/3/3</li>
+      <li>QE 7.1+ (acba92c41e9e438be43825f7069dfb2f70f6ff64)</li>
+      <li>FX1000 (arm64fx)</li>
+    </ul>
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ module add fj fjmpi fftw
+$ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2BLAMP FFT_LIBS="-lfftw3_threads -lfftw3" --enable-openmp
+    </code></pre>
+
+    このままだと上手くいかないので、あとはmake.incを手動で書き換える<a href="./make.inc">make.inc</a>。
+    その後
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+make pw
+    </code></pre>
+    libmbd (Many Body Dispersion)のところで一旦コケるが、もう一度makeすると成功する。
+    ただし、上記のmake.incではMBDをオフにしている。
+    これは富士通コンパイラがFortran2018の仕様の一部(c_bindとオプショナル引数の併用)をサポートしていないため。
+    MBDを有効にするためにはその部分のコードを書き換える必要がある。
+
+    <p>2023/3/3現在、スレッド並列版ZGEMMを呼ぶと落ちるスレッド数と行列サイズによっては落ちる(バグ？)。サポートデスクに問い合わせ中。</p>
+
+    <h2>Wisteria Aquarius</h2>
+
+    <ul>
+      <li>2022/12/13</li>
+      <li>QE 7.1+ (1483e57599f126cd98f16b4d78ed1f3273cf65cb)</li>
+      <li>Nvidia A100</li>
+      <li>Cuda aware MPI有り</li>
+    </ul>
+    
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ module add nvidia nvmpi
+$ ./configure --with-cuda=${NVHPC}/Linux_x86_64/22.7/cuda --with-cuda-cc=80 --with-cuda-runtime=11.7 --enable-openmp --with-cuda-mpi=yes
+$ make pw
+    </code></pre>
+
+    ph.xの実行がまだ出来ていない(かったような記憶がある)。
+
+    <h2>ISSP system-C kugui ACC-node</h2>
+
+    <ul>
+      <li>2022/12/13</li>
+      <li>QE 7.1+ (1483e57599f126cd98f16b4d78ed1f3273cf65cb)</li>
+      <li>Nvidia A100</li>
+      <li>Cuda aware MPI有り？</li>
+    </ul>
+    
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ module add  nvhpc-nompi openmpi_nvhpc
+$ ./configure --with-cuda=${NVHPC}/cuda/11.6/ --with-cuda-cc=80 --with-cuda-runtime=11.6 --enable-openmp --with-cuda-mpi=yes
+$ make pw
+    </code></pre>
+
+    動作未確認
+
+  </body>
+</html>
