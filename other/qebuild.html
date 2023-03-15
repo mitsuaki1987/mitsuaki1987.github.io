@@ -58,11 +58,9 @@ make pw
     
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 $ module add nvidia nvmpi
-$ ./configure --with-cuda=${NVHPC}/Linux_x86_64/22.7/cuda --with-cuda-cc=80 --with-cuda-runtime=11.7 --enable-openmp --with-cuda-mpi=yes
+$ ./configure --with-cuda=${NVHPC}/Linux_x86_64/22.7/cuda --with-cuda-cc=80 --with-cuda-runtime=11.7 --enable-openmp --with-cuda-mpi=yes BLAS_LIBS="-L${NVHPC}/Linux_x86_64/22.7/compilers/lib/ -lblas" LAPACK_LIBS="-L${NVHPC}/Linux_x86_64/22.7/compilers/lib/ -llapack"
 $ make pw
     </code></pre>
-
-    ph.xの実行がまだ出来ていない(かったような記憶がある)。
 
     <h2>ISSP system-C kugui ACC-node</h2>
 
