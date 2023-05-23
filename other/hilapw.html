@@ -1,0 +1,638 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>河村光晶HomePage</title>
+    
+    <meta name="description" content="河村光晶HomePage">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+
+    <h1>
+      HiLAPWの使い方 (極軌道断面積の計算)
+    </h1>
+    
+    HiLAPWバージョン1.48に準拠する。
+
+    <h2>インストール準備</h2>
+
+    展開して中に入る。<b>ホームディレクトリ直下に置かないと動かないので注意。</b>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ tar xzvf ~/hilapw.tar.gz
+$ cd hilapw/1.48/
+    </code></pre>
+
+    Makefileなどを編集する。
+    コンパイルオプションとしては、HiLAPWでは「精度指定なしのREAL/COMPLEX変数の宣言をした時には倍精度にする。REAL(8)/COMPLEX(8)はそのまま倍精度」という事を暗黙に定めているようなのでそれをintelのもの(-r8)から変える。
+    またソースファイルもいくつか変更が必要。
+    <b>OpenMPは使われていない</b>
+
+    <h3>gfortran/富士通fortran(frtpx)で行った変更</h3>
+    
+    <h4>共通</h4>
+    <p><b>Makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+< include ./Make.conf_mac
+---
+> include ./Make.conf
+    </code></pre>
+    <p><b>pMakefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+22c22
+< include ./Make.conf_i19.1.1.217
+---
+> include ./Make.conf
+    </code></pre>
+    <p><b>sources/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+22c22
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_2nd/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_2nd/pmakefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+<p><b>sources_Z2/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_area/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_area_so/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_cif/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_efgr/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_fermi/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+19c19
+< include ../Make.conf_mac
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_fermi/pmakefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_fermi_so/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_fermi_so/pmakefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_latinfo/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_newtau/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_p/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+18c18
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_phonon/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_polz/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_spec3/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_super/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+20c20
+< include ../Make.conf_i15.0.3
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_wavs/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    <p><b>sources_wavs_so/makefile</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+21c21
+< include ../Make.conf_i19.1.1.217
+---
+> include ../Make.conf
+    </code></pre>
+    LIB変数の定義用。まとめて変更するには
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ sed -i -e "/^include \.\/Make.conf/c include \.\/Make.conf" Makefile pMakefile
+$ sed -i -e "/^include \.\.\/Make.conf/c include \.\.\/Make.conf" `find ./source*/ -name "*makefile"`
+    </code></pre>   
+        
+    <p><b>lib/efitb.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+117c117
+>       real*8 c(1:10),xmin,xmax,x0,x,y,x1,x2,x3,difx
+---
+<       real*8 c(1:4),xmin,xmax,x0,x,y,x1,x2,x3,difx
+    </code></pre>
+    実引数と仮引数のサイズが合っていない。
+
+    <p><b>sources/lattice_bases.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+18c18,20
+<      &               TT, OT, OT, -OT, OT, OT, -OT,-TT, OT/ ! R
+---
+>      &               0.6666666666667, 0.33333333333, 0.33333333333,
+>      &              -0.3333333333333, 0.33333333333, 0.33333333333,
+>      &              -0.3333333333333,-0.66666666667, 0.33333333333/ ! R
+    </code></pre>
+    DATA構文でPARAMETER宣言された数値が使えない。
+
+    <p><b>operation_joint.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+45c45
+<           C(I)=TRIM(INT2CHA(N))//"/"//TRIM(INT2CHA(D))
+---
+>           WRITE(C(I),'(i0,a,i0)') N, "/", D
+    </code></pre>
+    文字型関数の文字長は、定数式でなければならない。
+
+    <p><b>sources/randoms.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+6c6
+<         INTEGER, PARAMETER :: RANDOM_P=2**31-1
+---
+>         INTEGER, PARAMETER :: RANDOM_P=2147483647
+    </code></pre>
+    PARAMETERをつけた宣言内でべき乗が使えない。
+
+    <p><b>sources/read02.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+41c41,42
+<       REAL, DIMENSION(3,3) :: H2R=(/1.,-1.,0.,0.,1.,-1.,1.,1.,1./)
+---
+>       REAL, DIMENSION(3,3) :: H2R=RESHAPE((/1.,-1.,0.,0.,1.,-1.,
+>      &                                    1.,1.,1./), (/3,3/))
+46c47,48
+<       REAL, DIMENSION(3,3) :: R2H=(/TT,OT,OT,-OT,OT,OT,-OT,-TT,OT/)
+---
+>       REAL, DIMENSION(3,3) :: R2H=RESHAPE((/TT,OT,OT,-OT,OT,OT,
+>      &                                    -OT,-TT,OT/), (/3,3/))
+    </code></pre>
+    宣言内で配列の形状が合っていない。
+
+    <p><b>sources_spec3/main_summatcv.f</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+70c70
+<      &    .OR.(SO_FLAG /= SO_FLAG_OLD))THEN
+---
+>      &    .OR.(SO_FLAG .neqv. SO_FLAG_OLD))THEN
+94c94
+<      &    .OR.(SO_FLAG /= SO_FLAG_OLD))THEN
+---
+>      &    .OR.(SO_FLAG .neqv. SO_FLAG_OLD))THEN
+    </code></pre>
+    論理型には/=ではなく.NEQV.を使う。
+
+    <h4>gfortranで行った変更</h4>
+    
+    <p><b>Make.FC_intel</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+2c2
+< FC= ifort
+---
+> FC= gfortran
+27,28c27,28
+< FFLAGS= -O -ip -r8 -qmkl=sequential -I${SD} -I${SD2} -I${SDF} -I${SDP} -I${SDSU} -I${SDA} -I${SDFS}
+< LFLAGS= -O -ip -r8 -qmkl=sequential
+---
+> FFLAGS= -fdefault-real-8 -fdefault-double-8 -I${SD} -I${SD2} -I${SDF} -I${SDP} -I${SDSU} -I${SDA} -I${SDFS}
+> LFLAGS= -fdefault-real-8 -fdefault-double-8 -llapack -lblas -lfftw3
+    </code></pre>
+    最適化オプションを付けるとxlapw(xplapw)の実行中にread17のところでSegmentation Faultになる。
+    <p><b>Make.conf(新規作成)</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+LIB = -llapack -lblas -lfftw3
+    </code></pre>
+
+    <h4>富士通fortranで行った変更</h4>
+    
+    <p><b>Make.FC_intel</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+2,3c2,3
+< FC= ifort
+< MPIFC= mpif90
+---
+> FC= frtpx
+> MPIFC= mpifrtpx
+27,28c27,28
+< FFLAGS= -O -ip -r8 -qmkl=sequential -I${SD} -I${SD2} -I${SDF} -I${SDP} -I${SDSU} -I${SDA} -I${SDFS}
+< LFLAGS= -O -ip -r8 -qmkl=sequential
+---
+> FFLAGS= -KNOSVE -C cdRR8 -SSL2 -I${SD} -I${SD2} -I${SDF} -I${SDP} -I${SDSU} -I${SDA} -I${SDFS}
+> LFLAGS= -KNOSVE -C cdRR8 -SSL2
+    </code></pre>
+    <p><b>Make.conf(新規作成)</b></p>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+LIB = -SSL2 -lfftw3
+    </code></pre>
+
+    <h2>インストール</h2>
+
+    make cleanで消えていないものがあるので消しておく。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ find ./ -name "*.o" -delete -or -name "*.mod" -delete
+    </code></pre>  
+
+    ビルドする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ make all
+$ make -f pMakefile all
+    </code></pre>
+    出来た実行ファイルは../bin/にコピーされる。
+    .bashrcに以下を書き込んでそこにパスを通しておく。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+export PATH=~/hilapw/bin/:$PATH
+    </code></pre>
+
+    <h2>初期ファイルの生成とSCF計算</h2>
+
+    適当な所に実行用のディレクトリを作り、そこに入る。
+
+    まず、次のコマンドを実行してデータベースファイルatomdata、atomdens、excodata、spgrdataをコピーしてくる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ getdata
+    </code></pre>
+    この中で、excodataで交換相関汎関数を指定する。一番上の行のみが使われるので、GGAを使う場合は一行目に
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+GGA PBE
+    </code></pre>
+    を書く。デフォルトでは「LDA MJW」になっている。
+    <br>
+    sets.inという名前のファイルを作成する。「コメント行」と書いてあるところは適当な文字列。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+システム名(「fcc Cu」など)
+-----NSPIN(コメント行)
+     1 (1がno-mag)
+-----SPACE GROUP AND LATTICE CONSTANTS (コメント行)
+I4/m2/m2/m (空間群)
+   3.9034920000   3.9034920000  12.9019480000 (格子乗数 a, b, c)
+  90.0000000000  90.0000000000  90.0000000000 (格子乗数 α, β, γ)
+-----ATOM INFORMATION (コメント行)
+4 (独立なワイコフ座標の数)
+Sr    0 (元素、0は固定?)
+   0.0000000000   0.0000000000   0.3525790000 (ワイコフ座標)
+Ru    0
+   0.0000000000   0.0000000000   0.0000000000
+O    0
+   0.0000000000   0.0000000000   0.1628990000
+O    0
+   0.0000000000   0.5000000000   0.0000000000
+-----K-POINT INFORMATION (コメント行)
+0 (「0」は一様kグリッド計算を表す)
+8 8 8 (kグリッド数)
+    </code></pre>
+    コマンド
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ xsets
+    </code></pre>
+    で初期ファイルを作成する。sets.outやwavoutなどが作られる。
+    wavout(波動関数出力？)をwavin(入力)にリネームする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ mv wavout wavin
+    </code></pre>
+    次にlapw.inという名前のファイルを作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ HiLAPW 1.0
+      20.0                     emax
+     160.0                     egmax
+        -1                     lbroad
+     0.005                     deltae
+         0                     ne
+        -1                     atomic_loop_mode
+      loop  dta  scf cmix smix field
+        10 0.00    5 0.20 0.00 0.00 0.00   
+    </code></pre>
+    4行目の「-1」はBlochl補正付きのテトラへドロン法を使っていることを表す。
+    したがってその次の行の、ブロードニング幅を意味する「0.005」は実質使われない。
+    「ne」の横の数字(「0」)は計算に使用する価電子バンドの数であるが、0にすると自動判定される。
+    最後の行の10はSCFループの回数を表す。収束判定はないので、いかに残差が少なくなろうともこの回数までSCFループを行う。
+    「0.20」は準ニュートン法の初期の混ぜ率。単純混合ではない。
+    その後xplapwという実行ファイルでSCF計算を行う。
+    MPI並列に対応している。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ mpiexec xplapw
+    </code></pre>
+    lapw.outなどのファイルが作られる。
+    「dis」というファイル(Charge distance)で残差の変化を見ることができる。
+    沢山出力されるので一括でラベルを付けてコピーを取るプログラムが用意されている。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ LAcopy A1
+    </code></pre>
+    これにより「dis」→「disA1」、「wavout」→「wavA1」(同時にwavinにコピーもされる)、「lapw.out」→「outA1」などとリネームされる。
+
+    <h2>細かいk点で再スタートSCF計算</h2>
+
+    kpts.inという名前のファイルを作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+0 (「0」は一様kグリッド計算を表す)
+16 16 16 (kグリッド数)
+    </code></pre>
+    xnewaというプログラムでk点グリッドの情報を書き換える。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ xnewa
+    </code></pre>
+    newa.outなどが作られる。
+    以前の出力をwavout→wavinとして入力にリネームし、もう一度SCFを実行してから今度はA2というラベルでコピーしておく。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ mv wavout wavin
+$ mpiexec xplapw
+$ LAcopy A2
+    </code></pre>
+
+    <h2>DOS/PDOSの計算</h2>
+
+    DOSの計算はxpdossというプログラムで行う。MPI並列に対応している。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ mpiexec xpdoss
+    </code></pre>
+    「pdos」というファイルにTotal DOSとPartial DOSが出力される。
+    このファイルをプロットするために、附属のユーティリティー「PSP」を用いる。
+    まず準備としてフェルミ準位の情報を抜き出す。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ getfermi outA2 > fermi
+    </code></pre>
+    このファイルの一列目に繰り返し書かれているのがフェルミ準位(Ry)である。
+    PSP用の入力ファイル「psp_pdos」を次のように作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+&page
+ porix=5.0, poriy=5.0, nframe=1
+/
+&frame
+ forix=0.0, foriy=0.0, flenx=10.0, fleny=10.0
+ fmkrx=0.2, fmkry=0.2
+ fwidt=5.0
+ xmin= -10.0, xmax=10.0, xdel=2.0
+ xos= フェルミ準位。上記参照
+ xmu=13.60569228
+ ymin= 0.0, ymax= 1.0, ydel=0.2
+ yos=0.0, ymu=0.073498
+ font='Times-Roman', fonts=0.8
+ fontx='Times-Roman', fontxs=0.6
+ fonty='Times-Roman', fontys=0.6
+ name='グラフのタイトル', namep='l'
+ namex='ENERGY(eV)', namexp='b', formx='(i3)'
+ namey='DOS(/eV)', nameyp='l', formy='(f4.1)'
+ nline=5
+/
+&line
+ finame='pdos', indx=3, indy=10, lit=0, liw=6, lic=10
+/
+&line
+ finame='pdos', indx=3, indy=11, lit=0, liw=6, lic=3
+/
+&line
+ finame='pdos', indx=3, indy=14, lit=0, liw=6, lic=2
+/
+&line
+ finame='pdos', indx=3, indy=16, lit=0, liw=6, lic=6
+/
+&line
+ finame='fermiA2', indx=1, indy=2, lit=0, liw=3, lic=0
+/
+    </code></pre>
+    「nline」は何本の線を描画するかを示す。
+    それぞれの線の中で「indx」「indy」で横軸と縦軸として用いる列を指定している。
+    「pdos」ファイルの各列(index)が何を意味するかは「pdos.index」を参照。
+
+    これをPSPの入力ファイルとして実行すると、標準出力にポストスクリプト形式で描かれる。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ PSP < psp_pdos > pdos.ps
+    </code></pre>
+    これでポストスクリプト(.ps)ファイル(pdos.ps)が作られる。
+    evinceなどで開いて見ることができる。
+
+    <h2>バンド描画</h2>
+
+    やや手順が多い。
+    例としてsimple cubicで(0.5,0,0)-(0,0,0)-(0.5,0.5,0)|(0,0,0)-(0.5,0.5,0.5)というパスを考える。
+    まずlapw.inを次のように書き換える。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ HiLAPW 1.0
+      20.0                     emax
+     160.0                     egmax
+         1                     lbroad
+     0.005                     deltae
+        -2                     ne
+        -1                     atomic_loop_mode
+      loop  dta  scf cmix smix field
+         1 0.00    0 0.00 0.00 0.00 0.00
+    </code></pre>
+    これはSCFを1ループのみ行うの事を意味する。
+    つぎに3本分のkパスのファイルを次のように作成する。
+    <br>
+    kpts_1.in
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+6
+0.5 0.0 0.0 1.0
+0.4 0.0 0.0 1.0
+0.3 0.0 0.0 1.0
+0.2 0.0 0.0 1.0
+0.1 0.0 0.0 1.0
+0.0 0.0 0.0 1.0
+    </code></pre>
+    kpts_2.in
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+6
+0.0 0.0 0.0 1.0
+0.1 0.1 0.0 1.0
+0.2 0.2 0.0 1.0
+0.3 0.3 0.0 1.0
+0.4 0.4 0.0 1.0
+0.5 0.5 0.0 1.0
+    </code></pre>
+    kpts_3.in
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+6
+0.0 0.0 0.0 1.0
+0.1 0.1 0.1 1.0
+0.2 0.2 0.2 1.0
+0.3 0.3 0.3 1.0
+0.4 0.4 0.4 1.0
+0.5 0.5 0.5 1.0
+    </code></pre>
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ef=`get1fermi outA2`
+for j in GX KG LG WL XU
+do
+  cp wavA2 wavin
+  cp ~/hilapw/bz/kpt.fcc.${j} kpts.in
+  xnewa
+  mv wavout wavin
+  mpiexec xplapw
+  LAcopy A2${j}
+  cp wavA2${j} wavin
+  xsymm
+  cat ek.list cm.list | xrept
+  mv eig1 eig1${j}
+  if [ -f eig2 ]; then
+    mv eig2 eig2${j}
+  fi
+  mv symm.out soutA2${j}
+  mv ek.list eklA2${j}
+  mv cm.list cmlA2${j}
+done
+sed -e "s/FERMI_ENERGY/${ef}/g" -e "s/SYSTEM/「グラフのタイトル」/g" -e "s/SCF/A2/g" ~/hilapw/data/psp_ek_fcc_template > psp_ek
+PSP < psp_ek > ek.ps
+    </code></pre>
+
+    <h2>フェルミ面の描画と極軌道断面積</h2>
+
+    まず、細かいk点での計算結果を入力にコピーする。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ cp wavA2 wavin
+    </code></pre>
+    次にフェルミ面近傍のバンドをスプライン補間する係数を計算する(xfitb)。
+    フェルミ面を含むバンドはoutA2のなかで「OCCUPATION」を検索すると分かる。
+    「WEIGHT」が0と1の間の半端な数になっているバンドが部分占有でフェルミ面を含む。
+    細かいkグリッドの計算で、実際に既約ブリルアンゾーンで何点使ったかを調べるには「NKPT」でoutA2をgrepすればよい
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ grep NKPT outA2
+    </code></pre>
+    これらの情報を使って、fitb.inという名前のファイルを作成する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+fitb.in (コメント行)
+NB1 NB2 (コメント行)
+25 27 (フェルミ面を含むバンドの上限と下限)
+MODE (コメント行)
+2 (「2」はスプライン補間を表す)
+NSTAR
+1047(細かいk点でのNKPTの3倍、この場合は既約k点数が349)
+    </code></pre>
+    そしてxfitbを実行する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ xfitb
+    </code></pre>
+    「fitc」というファイルにスプライン補間の係数が保存される。
+    <br>
+    その後フェルミ面の描画を行う。
+    入力ファイルは
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+ferm.in (コメント行)
+0 0 0 (おそらく固定?)
+   0.00000  0.85178  0.25771   0.88991 44 (逆格子ベクトルとその長さ、分割数)
+   0.85178  0.00000  0.25771   0.88991 44
+   0.85178  0.85178  0.00000   1.20460 60
+    </code></pre>
+    逆格子ベクトルはsets.outの中で「RCMT-MATRIX」の下に書いてある。
+    ただし、行と列が転置されているので上記インプットを作るときにはそこに注意する。
+    FermiSurferで描画可能なファイル「fermis.frmsf」を生成するためには次の二つのプログラムを続けて実行する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ xferm
+$ xf2f
+    </code></pre>
+    フェルミエネルギーを原点(0)に取っていないので、FermiSurferを実行した後にフェルミエネルギーを入力しないとフェルミ面が表示されない。
+    フェルミエネルギーは次のようにして取得する。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ get1fermi outA2
+    </code></pre>
+    <br>
+    極軌道断面積の計算のためのプログラムの入力ファイルを「area.in」という名前で以下のように作る。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+area.in (コメント行)
+# center (コメント行)
+0.42589   0.42589   0.00000 (断面積を捜査する「中心」。デカルト座標で指定する)
+# magnetic field angles (THETA1 PHI1 THETA2 PHI2 NANGLE) (コメント行)
+0.0 0.0 45.0 0.0 45 (始めのオイラー角、終わりのオイラー格、分割数)
+# search lengths (コメント行)
+0.26 20 0.0 0.86 (断面積を捜査する「長さ」と分割数)
+# ispin, iband (コメント行)
+1 1 (断面積を計算するスピンとバンドを指定する)
+# fermi (コメント行)
+ 0.6773931350 A2 (フェルミエネルギー、「A2」固定?)
+    </code></pre>
+    断面積を計算する「中心」と「長さ」については、FermiSurferのSphere描画機能を使う。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+$ xare
+    </code></pre>
+    で計算を行い、「extreme_area」というファイルに結果が出力される。
+    ただし、並列化されておらず時間がかかるので、プログラムをバックグラウンド実行で複数流して並列したほうが良い。
+    その際、wavin、fitc、area.inが必要な入力ファイルで、これら(area.inを変えながら)をコピーしたディレクトリを複数作ってその中で同時実行すると良い。

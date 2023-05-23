@@ -32,7 +32,7 @@
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 $ module add fj fjmpi fftw
-$ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2BLAMP FFT_LIBS="-lfftw3_threads -lfftw3" --enable-openmp
+$ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2BLAMP FFT_LIBS="-lfftw3_omp -lfftw3" --enable-openmp
     </code></pre>
 
     このままだと上手くいかないので、あとはmake.incを手動で書き換える<a href="./make.inc">make.inc</a>。
@@ -45,7 +45,8 @@ make pw
     これは富士通コンパイラがFortran2018の仕様の一部(c_bindとオプショナル引数の併用)をサポートしていないため。
     MBDを有効にするためにはその部分のコードを書き換える必要がある。
 
-    <p>2023/3/3現在、スレッド並列版ZGEMMを呼ぶと落ちるスレッド数と行列サイズによっては落ちる(バグ？)。サポートデスクに問い合わせ中。</p>
+    <p>スレッド並列版ZGEMMを呼ぶと落ちるスレッド数と行列サイズによっては落ちる(SSL2のバグ)。
+      回避するためには-KNOSVE(SVE無効化)のオプションを入れる。</p>
 
     <h2>Wisteria Aquarius</h2>
 
@@ -73,7 +74,7 @@ $ make pw
     
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 $ module add  nvhpc-nompi openmpi_nvhpc
-$ ./configure --with-cuda=${NVHPC}/cuda/11.6/ --with-cuda-cc=80 --with-cuda-runtime=11.6 --enable-openmp --with-cuda-mpi=yes
+$ ./configure --with-cuda=${NVHPC}/Linux_x86_64/22.2/cuda --with-cuda-cc=80 --with-cuda-runtime=11.6 --enable-openmp --with-cuda-mpi=yes BLAS_LIBS="-L${NVHPC}/Linux_x86_64/22.2/compilers/lib/ -lblas" LAPACK_LIBS="-L${NVHPC}/Linux_x86_64/22.2/compilers/lib/ -llapack"
 $ make pw
     </code></pre>
 

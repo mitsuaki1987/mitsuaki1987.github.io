@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" 
+          content="text/html; charset=utf-8">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ["\\(","\\)"]] } });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+    </script>
+    <meta http-equiv="X-UA-Compatible" CONTENT="IE=EmulateIE7" />
+    
+    <title>河村光晶HomePage</title>
+    
+    <meta name="description" content="河村光晶HomePage">
+    
+  </head>
+  <body bgcolor="CCFFCC">
+
+    <h1>
+      スパコンでのエラーと解決
+    </h1>
+    
+    <h2>ISSP-OhtakaでのMPI一対一通信(MPI_Sendなど)でのFatal error</h2>
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+Abort(272751375) on node 0 (rank 0 in comm 0): Fatal error in PMPI_Sendrecv_replace: Other MPI error, error stack:
+PMPI_Sendrecv_replace(268).............: MPI_Sendrecv_replace(buf=0x7fbaf72ae020, count=268435001, MPI_DOUBLE_COMPLEX, dest=1, stag=0, src=1, rtag=0, MPI_COMM_WORLD, status=0x6b7240) failed
+PMPI_Sendrecv_replace(230).............:
+MPIR_Wait_impl(45).....................:
+MPIDI_Progress_test(185)...............:
+MPIDI_OFI_handle_cq_entries(958).......:
+recv_event(128)........................:
+MPIDI_OFI_lmt_event(654)...............:
+MPIDI_OFI_LMT_control_send_generic(521):
+MPIDI_OFI_inject_handler_vci(671)......: OFI tagged inject failed (ofi_impl.h:671:MPIDI_OFI_inject_handler_vci:Invalid argument)
+Abort(541186831) on node 1 (rank 1 in comm 0): Fatal error in PMPI_Sendrecv_replace: Other MPI error, error stack:
+PMPI_Sendrecv_replace(268).............: MPI_Sendrecv_replace(buf=0x7f93da5fb020, count=268435001, MPI_DOUBLE_COMPLEX, dest=0, stag=0, src=0, rtag=0, MPI_COMM_WORLD, status=0x6b7240) failed
+PMPI_Sendrecv_replace(230).............:
+MPIR_Wait_impl(45).....................:
+MPIDI_Progress_test(185)...............:
+MPIDI_OFI_handle_cq_entries(958).......:
+recv_event(128)........................:
+MPIDI_OFI_lmt_event(654)...............:
+MPIDI_OFI_LMT_control_send_generic(521):
+MPIDI_OFI_inject_handler_vci(671)......: OFI tagged inject failed (ofi_impl.h:671:MPIDI_OFI_inject_handler_vci:Invalid argument)
+slurmstepd: error: *** STEP 794709.0 ON c15u02n2 CANCELLED AT 2022-05-10T10:42:41 ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: c15u02n3: task 1: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=794709.0
+srun: error: c15u02n2: task 0: Exited with exit code 1
+    </code></pre>
+    のようなエラーが発生して異常終了する。
+
+    <p><b>解決策</b></p>
+
+    Intel-MPIの仕様(バッファサイズ)。
+    .bashrcに
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+export FI_MLX_INJECT_LIMIT=0x80000000
+    </code></pre>
+    を入れる。
+
+    <h2>Wisteria-odysseyでのスレッド並列版ZGEMMのエラー</h2>
+
+    -SSL2BLAMPオプションで並列版のZGEMMを使ったとき
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+*** Error in double free or corruption (out): 0x0000000003ba0010 ***
+======= Backtrace: =========
+/opt/FJSVxos/mmm/lib64/libmpg.so.1(+0x78d4)[0x4000008078d4]
+/opt/FJSVxos/mmm/lib64/libmpg.so.1(+0x7d2c)[0x400000807d2c]
+/opt/FJSVxos/mmm/lib64/libmpg.so.1(+0x9eb4)[0x400000809eb4]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfj90i.so.1(jwe_xdal+0xd4)[0x400000254f4c]
+./a.out[0x40c484]
+./a.out[0x402274]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(+0x74a48)[0x400000114a48]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(__kmp_invoke_microtask+0xa0)[0x400000134600]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(+0x37604)[0x4000000d7604]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(__kmp_fork_call+0xc44)[0x4000000d85cc]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(__kmpc_fork_call+0xec)[0x4000000cb074]
+/opt/FJSVxtclanga/tcsds-1.2.36/lib64/libfjomp.so(__jwe_opar+0x1a4)[0x400000115064]
+./a.out[0x401a50]
+./a.out[0x4016bc]
+    </code></pre>
+    のようなエラーが発生して異常終了する。
+
+    <p><b>解決策</b></p>
+    富士通SSLのスレッド並列版のバグ。
+    シリアル版を用いるか、-KNOSVEを使ってベクトル命令を無効にする。
+
+    <h2>富岳などでHPhiのLOBPCGが発散する</h2>
+
+    <p><b>解決策</b></p>
+    SSL2のZHEEVの精度が関連する。
+    -KNOSVEを付けてベクトル命令を無効にする。
+    
