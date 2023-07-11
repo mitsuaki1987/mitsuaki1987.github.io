@@ -40,10 +40,11 @@ $ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2B
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
 make pw
     </code></pre>
-    libmbd (Many Body Dispersion)のところで一旦コケるが、もう一度makeすると成功する。
-    ただし、上記のmake.incではMBDをオフにしている。
+    libmbd (Many Body Dispersion)のところで一旦コケる。
     これは富士通コンパイラがFortran2018の仕様の一部(c_bindとオプショナル引数の併用)をサポートしていないため。
-    MBDを有効にするためにはその部分のコードを書き換える必要がある。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+sed -i -e "s/, bind(c)//g" -e "s/bind(c)//g" mbd_c_api.F90
+    </code></pre>
 
     <p>スレッド並列版ZGEMMを呼ぶと落ちるスレッド数と行列サイズによっては落ちる(SSL2のバグ)。
       回避するためには-KNOSVE(SVE無効化)のオプションを入れる。</p>
@@ -63,6 +64,26 @@ $ ./configure --with-cuda=${NVHPC}/Linux_x86_64/22.7/cuda --with-cuda-cc=80 --wi
 $ make pw
     </code></pre>
 
+    小さい系では-nkを増やしたくなり、その場合にはGPUあたりのprocess数を増やしたくなる。
+    MPSを使うと良い
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#!/bin/bash
+
+export CUDA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
+export CUDA_MPS_PIPE_DIRECTORY=/tmp/nvidia-mps
+export CUDA_MPS_LOG_DIRECTORY=/tmp/nvidia-log
+nvidia-cuda-mps-control -d
+
+unset CUDA_VISIBLE_DEVICES
+
+export OMP_NUM_THREADS=1
+mpiexec -np 72 ~/program/qe/a/bin/pw.x -nk 72 -in scf_1000026.in |tee mps_72.out
+
+echo quit | nvidia-cuda-mps-control
+    </code></pre>
+    のようにする。
+    
     <h2>ISSP system-C kugui ACC-node</h2>
 
     <ul>
