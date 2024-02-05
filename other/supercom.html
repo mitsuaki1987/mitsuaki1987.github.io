@@ -82,15 +82,32 @@ export FI_MLX_INJECT_LIMIT=0x80000000
 ./a.out[0x401a50]
 ./a.out[0x4016bc]
     </code></pre>
-    のようなエラーが発生して異常終了する。
+    のようなエラーが発生して異常終了する(富士通言語環境バージョン1.2.37まで)。
 
     <p><b>解決策</b></p>
-    富士通SSLのスレッド並列版のバグ。
-    シリアル版を用いるか、-KNOSVEを使ってベクトル命令を無効にする。
+    <strike>
+      富士通SSLのスレッド並列版のバグ。
+      シリアル版を用いるか、-KNOSVEを使ってベクトル命令を無効にする。
+    </strike>
+    <br>
+    富士通言語環境バージョン1.2.38にて修正された。
 
     <h2>富岳などでHPhiのLOBPCGが発散する</h2>
 
-    <p><b>解決策</b></p>
     SSL2のZHEEVの精度が関連する。
+
+    <p><b>解決策1</b></p>
     -KNOSVEを付けてベクトル命令を無効にする。
+    
+    <p><b>解決策2</b></p>
+    ZHEEVの引数WORKに対して、mallocではなくposix_memalignを使う。
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+void *vptr;
+posix_memalign(&vptr, 256, lwork * sizeof(double complex));
+work = (double complex*)vptr;
+:
+free(work);
+    </code></pre>
+
+    
     
