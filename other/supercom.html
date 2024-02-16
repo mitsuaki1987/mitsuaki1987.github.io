@@ -109,5 +109,18 @@ work = (double complex*)vptr;
 free(work);
     </code></pre>
 
+    <h2>Wisteria-odysseyでファイルIOが遅い(エラーではない)</h2>
+
+    Quantum ESPRESSOの波動関数ファイルなど、ファイル数が多かったりプロセス数が多いと起るようである。
+    おそらくメモリ節約のためファイルキャッシュを小さく取っているためであると考えられる。
+
+    <p><b>解決策</b></p>
+    <code>pjsub</code>のオプションで<code>-x PJM_FEFS_CACHE_MODE=3</code>をつける。
+    バッチジョブでは
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+#PJM -x PJM_FEFS_CACHE_MODE=3
+    </code></pre>
+    を追記する。ただしその分使えるメモリのサイズが減ることに注意。
     
-    
+  </body>
+</html>
