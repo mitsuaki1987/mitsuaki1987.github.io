@@ -36,18 +36,30 @@ $ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2B
     </code></pre>
 
     このままだと上手くいかないので、あとはmake.incを手動で書き換える<a href="./make.inc">make.inc</a>。
+    特に重要なのは
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+FFLAGS         = -Kfast -Kopenmp -X08 -Cpp
+    </code></pre>
+    順番に、最適化、OpenMP、Fortran08仕様、Cプリプロセッサマクロ有効化。
+    <br>
     その後
-    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 make pw
     </code></pre>
     libmbd (Many Body Dispersion)のところで一旦コケる。
     これは富士通コンパイラがFortran2018の仕様の一部(c_bindとオプショナル引数の併用)をサポートしていないため。
-    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 sed -i -e "s/, bind(c)//g" -e "s/bind(c)//g" mbd_c_api.F90
     </code></pre>
 
-    <p>スレッド並列版ZGEMMを呼ぶと落ちるスレッド数と行列サイズによっては落ちる(SSL2のバグ)。
-      回避するためには-KNOSVE(SVE無効化)のオプションを入れる。</p>
+    <p><strike>
+        スレッド並列版ZGEMMを呼ぶとスレッド数と行列サイズによっては落ちる(SSL2のバグ)。
+        回避するためには-KNOSVE(SVE無効化)のオプションを入れる。
+    </strike></p>
+    <br>
+    富士通言語環境バージョン1.2.38にて修正された。
+
 
     <h2>Wisteria Aquarius</h2>
 
