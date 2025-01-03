@@ -18,10 +18,16 @@
   <body bgcolor="CCFFCC">
 
     <h1>
-      スパコンでのエラーと解決
+      スパコンでのエラーと解決法
     </h1>
+    <ul>
+      <li><a href="#ohtaka-mpi-send">ISSP-OhtakaでのMPI一対一通信(MPI_Sendなど)でのFatal error</a></li>
+      <li><a href="#wisteria-o-zgemm">Wisteria-odysseyでのスレッド並列版ZGEMMのエラー</a></li>
+      <li><a href="#fugaku-lobpcg">富岳などでHPhiのLOBPCGが発散する</a></li>
+      <li><a href="#wisteria-o-file-io">Wisteria-odysseyでファイルIOが遅い(エラーではない)</a></li>
+    </ul>
     
-    <h2>ISSP-OhtakaでのMPI一対一通信(MPI_Sendなど)でのFatal error</h2>
+    <h2 id="ohtaka-mpi-send">ISSP-OhtakaでのMPI一対一通信(MPI_Sendなど)でのFatal error</h2>
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
 Abort(272751375) on node 0 (rank 0 in comm 0): Fatal error in PMPI_Sendrecv_replace: Other MPI error, error stack:
@@ -61,7 +67,7 @@ export FI_MLX_INJECT_LIMIT=0x80000000
     </code></pre>
     を入れる。
 
-    <h2>Wisteria-odysseyでのスレッド並列版ZGEMMのエラー</h2>
+    <h2 id="wisteria-o-zgemm">Wisteria-odysseyでのスレッド並列版ZGEMMのエラー</h2>
 
     -SSL2BLAMPオプションで並列版のZGEMMを使ったとき
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code></code>
@@ -92,7 +98,7 @@ export FI_MLX_INJECT_LIMIT=0x80000000
     <br>
     富士通言語環境バージョン1.2.38にて修正された。
 
-    <h2>富岳などでHPhiのLOBPCGが発散する</h2>
+    <h2 id="fugaku-lobpcg">富岳などでHPhiのLOBPCGが発散する</h2>
 
     SSL2のZHEEVの精度が関連する。
 
@@ -108,8 +114,9 @@ work = (double complex*)vptr;
 :
 free(work);
     </code></pre>
+    これは実はHPhiのLOBPCGの実装が、数値的に不安定になる可能性を含んでいるためで、修正版のプルリクエストがマージされれば解決する。
 
-    <h2>Wisteria-odysseyでファイルIOが遅い(エラーではない)</h2>
+    <h2 id="wisteria-o-file-io">Wisteria-odysseyでファイルIOが遅い(エラーではない)</h2>
 
     Quantum ESPRESSOの波動関数ファイルなど、ファイル数が多かったりプロセス数が多いと起るようである。
     おそらくメモリ節約のためファイルキャッシュを小さく取っているためであると考えられる。

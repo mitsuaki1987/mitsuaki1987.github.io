@@ -20,9 +20,14 @@
     <h1>
       Quantum ESPRESSOのビルド
     </h1>
-    
-    <h2>Wisteria Odyssey</h2>
 
+    <ul>
+      <li><a href="#wisteria-o">Wisteria Odyssey</a></li>
+      <li><a href="#wisteria-a">Wisteria Aquarius</a></li>
+      <li><a href="#kugui-acc">ISSP system-C kugui ACC-node</a></li>
+    </ul>
+    
+    <h2 id="wisteria-o">Wisteria Odyssey</h2>
 
     <ul>
       <li>2023/3/3</li>
@@ -32,16 +37,56 @@
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
 $ module add fj fjmpi fftw
-$ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2BLAMP FFT_LIBS="-lfftw3_omp -lfftw3" --enable-openmp
+$ ./install/configure LANG=C MPIF90=mpifrtpx CC=fccpx F90=frtpx BLAS_LIBS=-SSL2BLAMP --enable-openmp
     </code></pre>
 
-    このままだと上手くいかないので、あとはmake.incを手動で書き換える<a href="./make.inc">make.inc</a>。
-    特に重要なのは
+    このままだと上手くいかないので、あとはmake.incを手動で書き換える。
+    特に重要なのは以下の部分:
 
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
-FFLAGS         = -Kfast -Kopenmp -X08 -Cpp
+.f90.o:
+        $(MPIF90) $(F90FLAGS) -c $<
+    </code></pre>
+    プリプロセッサの有効化オプションが正しく認識されず、他のコマンドに変わってしまっているのを直す。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+DFLAGS         =  -D__MPI -D__FFTW -D__SCALAPACK
+    </code></pre>
+    Wisteria-OにプリインストールされているFFTW3を使うとOpenMPと併用したときにメモリリークを起こすので、QEに付属のものを使う。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+MPIF90         = mpifrtpx
+F90           = frtpx
+CC             = fccpx
+    </code></pre>
+    この部分に関しては、おそらく正しく設定されているはず。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+FFLAGS         = -Kfast -Kopenmp -X08 -Cpp -g
     </code></pre>
     順番に、最適化、OpenMP、Fortran08仕様、Cプリプロセッサマクロ有効化。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+LD             = mpifrtpx
+LDFLAGS        = -Kfast -Kopenmp
+    </code></pre>
+    リンカーおよびリンクオプション。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+BLAS_LIBS      = -SSL2BLAMP
+    </code></pre>
+    これで富士通SSL2のBLASとLAPACK両方がリンクされる。この下のLAPACK_LIBSは空欄でよい。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+SCALAPACK_LIBS = -SCALAPACK
+    </code></pre>
+    富士通SSL2のScaLAPACKを使う。
+
+    <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
+FFT_LIBS       =
+    </code></pre>    
+    前に挙げた理由でQEに付属のFFTWを使うため空欄にする。
+
     <br>
     その後
     <pre style="border: 1px solid #000000;background-color: #ffffff;padding-left: 10px;"><code>
@@ -61,7 +106,7 @@ sed -i -e "s/, bind(c)//g" -e "s/bind(c)//g" mbd_c_api.F90
     富士通言語環境バージョン1.2.38にて修正された。
 
 
-    <h2>Wisteria Aquarius</h2>
+    <h2 id="wisteria-a">Wisteria Aquarius</h2>
 
     <ul>
       <li>2022/12/13</li>
@@ -96,7 +141,7 @@ echo quit | nvidia-cuda-mps-control
     </code></pre>
     のようにする。
     
-    <h2>ISSP system-C kugui ACC-node</h2>
+    <h2 id="kugui-acc">ISSP system-C kugui ACC-node</h2>
 
     <ul>
       <li>2022/12/13</li>
